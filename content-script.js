@@ -21,7 +21,7 @@ try {
     // For now, let's fix it to 50.
     remnants = remnants.filter(x =>  x.length >= 47 
         || x.trim().startsWith("【")
-        || x.includes('"')
+        || x.includes('“')
     );
 
     // Join back
