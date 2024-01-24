@@ -9,5 +9,6 @@
   "action": {
     "default_popup": "hello.html",
     "default_icon": "hello_extensions.png"
-  }
+  },
+  "permissions": ["scripting", "activeTab"]
 }
