@@ -13,8 +13,6 @@ remnants = remnants.map(c => c.split('\n').flat()).flat();
 remnants = remnants.filter(c => c != '');  // not empty
 var first_line = mainhtml.split(remnants[1])[0];
 var last_line = mainhtml.split(remnants[remnants.length-1])[1];
-console.warn(first_line);
-console.log(last_line);
 
 // Filter now
 // We'll allow length definition later. 
