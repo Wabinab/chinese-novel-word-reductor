@@ -1,14 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Focus Mode",
-  "description": "Enable focus mode on Chrome's official Extensions and Chrome Web Store documentation.",
+  "name": "69xinshu removal",
+  "description": "meh",
   "version": "1.0",
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "hello.html",
-    "default_icon": "hello_extensions.png"
-  },
+  "content_scripts": [{
+    "matches": "https://www.69xinshu.com/txt/*",
+    "js": ["content-script.js"]
+  }],
   "permissions": ["scripting", "activeTab"]
 }
