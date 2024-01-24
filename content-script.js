@@ -22,6 +22,6 @@ console.log(last_line);
 remnants = remnants.filter(x => x.length >= 50);
 
 // Join back
-var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br><br>\n${last_line}`;
+var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_line}`;
 
 document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
