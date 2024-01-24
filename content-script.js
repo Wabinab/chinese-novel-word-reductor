@@ -20,6 +20,6 @@ var last_line = mainhtml.split(remnants[remnants.length-1])[1];
 remnants = remnants.filter(x => x.length >= 50);
 
 // Join back
-var final_html = `${first_line}\n<br><br>\n${remnants.join('\n<br><br>\n')}`;
+var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br><br>\n${last_line}`;
 
 document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
