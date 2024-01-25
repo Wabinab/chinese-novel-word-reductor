@@ -1,17 +1,25 @@
+chrome.browserAction.onClicked.addListener(function(tab) {
+    chrome.scripting.getRegisteredContentScripts()
+    .then(scripts => {
+        document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
+    });
+});
+
+
 const activate = document.getElementById('activate');
 activate.addEventListener('click', () => {
     if (activate.checked) { register_script(); }
     else { unregister_script(); }
 });
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete' && tab.active) {
-        chrome.scripting.getRegisteredContentScripts()
-        .then(scripts => {
-            document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
-        });
-    }
-});
+// chrome.tabs.onClicked.addListener(function(tabId, changeInfo, tab) {
+//     if (changeInfo.status == 'complete' && tab.active) {
+//         chrome.scripting.getRegisteredContentScripts()
+//         .then(scripts => {
+//             document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
+//         });
+//     }
+// });
 
 
 function register_script() {
