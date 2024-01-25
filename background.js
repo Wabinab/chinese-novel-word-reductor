@@ -7,6 +7,4 @@ chrome.runtime.onInstalled.addListener(() => {
     }])
     .then(() => console.log("registration complete"))
     .catch((err) => console.warn("unexpected error during registration", err));
-
-    alert("initialized");
 });
