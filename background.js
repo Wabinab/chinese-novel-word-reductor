@@ -27,14 +27,14 @@ chrome.runtime.onInstalled.addListener(() => {
 //     }
 // });
 
-chrome.runtime.onConnect(() => {
-    chrome.scripting.getRegisteredContentScripts()
-    .then(scripts => {
-        if (scripts.find(c => c.id == "basic-script")) {
-            unregister_and_reregister();
-        }
-    });
-})
+// chrome.runtime.onConnect(() => {
+//     chrome.scripting.getRegisteredContentScripts()
+//     .then(scripts => {
+//         if (scripts.find(c => c.id == "basic-script")) {
+//             unregister_and_reregister();
+//         }
+//     });
+// })
 
 function unregister_and_reregister() {
     chrome.scripting.unregisterContentScripts({ 
