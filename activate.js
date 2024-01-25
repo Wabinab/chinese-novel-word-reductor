@@ -66,6 +66,11 @@ async function unregister_script(url) {
     }
     data.splice(idx, 1);  // splice change in place. DO NOT ASSIGN IT!!!
 
+    // Script must have at least one match, so. 
+    if (data.length == 0) {
+        data.push("https://www.69xinshu.com/txt/0/*");
+    }
+
     chrome.scripting.updateContentScripts([{
         id: "basic-script", 
         matches: data
