@@ -5,10 +5,10 @@
 //     });
 // });
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-    console.log("browser action on clicked called");
-    restore_options();
-});
+// chrome.browserAction.onClicked.addListener(function(tab) {
+//     console.log("browser action on clicked called");
+//     restore_options();
+// });
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM content loaded");
