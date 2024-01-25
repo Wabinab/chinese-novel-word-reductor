@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
     }])
     .then(() => { 
         console.log("registration complete");
-        document.getElementById('activate').checked = true;
+        // document.getElementById('activate').checked = true;
     })
     .catch((err) => console.warn("unexpected error during registration", err));
 });
