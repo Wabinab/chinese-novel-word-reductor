@@ -21,12 +21,21 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         chrome.scripting.getRegisteredContentScripts()
         .then(scripts => {
             if (scripts.find(c => c.id == "basic-script")) {
-                unregister_script();
-                register_script();
+                unregister_and_reregister();
             }
         });
     }
 });
+
+function unregister_and_reregister() {
+    chrome.scripting.unregisterContentScripts({ 
+        ids: ["basic-script"] 
+    })
+    .then(() => { 
+        chrome.storage.local.set({ "basic-script": false });
+        register_script();
+    });
+}
 
 function register_script() {
     chrome.scripting.registerContentScripts([{
@@ -36,18 +45,7 @@ function register_script() {
         matches: ["https://www.69xinshu.com/txt/*"],
     }])
     .then(() => {
-        console.log("registration complete");
         chrome.storage.local.set({ "basic-script": true })
     })
     .catch((err) => console.warn("unexpected error during registration", err));
-}
-
-function unregister_script() {
-    chrome.scripting.unregisterContentScripts({ 
-        ids: ["basic-script"] 
-    })
-    .then(() => { 
-        console.log("un-registration complete");
-        chrome.storage.local.set({ "basic-script": false })
-    });
 }
