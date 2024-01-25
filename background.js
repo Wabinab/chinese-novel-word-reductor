@@ -5,10 +5,11 @@ chrome.runtime.onInstalled.addListener(() => {
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/*"],
     }])
-    .then(() => console.log("registration complete"))
+    .then(() => { 
+        console.log("registration complete");
+        document.getElementById('activate').checked = true;
+    })
     .catch((err) => console.warn("unexpected error during registration", err));
-
-    const listScript = [];
 });
 
 
@@ -16,11 +17,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.active) {
         chrome.scripting.getRegisteredContentScripts()
         .then(scripts => {
-            console.log("Registered scripts: ");
-            console.log(scripts);
+            document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
         });
-        
-        listScript.push(tabId);
-        console.log(listScript);
     }
 });
