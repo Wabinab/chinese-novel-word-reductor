@@ -19,8 +19,9 @@ const activate = document.getElementById('activate');
 function restore_options() {
     chrome.storage.local.get(["basic-script"]).then((result) => {
         console.log("Value is: ");
-        console.log(result);
-        activate.checked = result.key;
+        console.log(result.key);
+        console.log(result.value)
+        activate.checked = result.value;
     })
 }
 
