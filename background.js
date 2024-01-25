@@ -13,11 +13,11 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete' && tab.active) {
-        chrome.scripting.getRegisteredContentScripts()
-        .then(scripts => {
-            document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
-        });
-    }
-});
+// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+//     if (changeInfo.status == 'complete' && tab.active) {
+//         chrome.scripting.getRegisteredContentScripts()
+//         .then(scripts => {
+//             document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
+//         });
+//     }
+// });

@@ -4,6 +4,15 @@ activate.addEventListener('click', () => {
     else { unregister_script(); }
 });
 
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete' && tab.active) {
+        chrome.scripting.getRegisteredContentScripts()
+        .then(scripts => {
+            document.getElementById('activate').checked = scripts.find(c => c.id == "basic-script") ? true : false;
+        });
+    }
+});
+
 
 function register_script() {
     chrome.scripting.registerContentScripts([{
