@@ -2,8 +2,7 @@ const match_key = "matches-list";
 activate.addEventListener('change', async (event) => {
     var checked = event.target.checked;
 
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, async (tabs) => {
-        console.log(tabs);
+    chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
         let url = filtered_url(tabs[0].url);
         if (checked) { await register_script(url); }
         else { await unregister_script(url); }
