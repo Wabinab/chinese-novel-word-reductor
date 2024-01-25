@@ -2,7 +2,7 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.scripting.registerContentScripts([{
         id: "basic-script",
         js: ["content-script.js"],
-        persistentAcrossSessions: true,
+        persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/*"],
     }])
     .then(() => console.log("registration complete"))
