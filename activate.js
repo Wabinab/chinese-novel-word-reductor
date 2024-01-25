@@ -8,13 +8,13 @@ activate.addEventListener('change', async (event) => {
 async function register_script(url) {
     const start_url = "https://www.69xinshu.com/txt/";
     if (!url.includes(start_url)) {
-        console.log("Not 69xinshu.")
+        console.log("Not 69xinshu.", url);
         return;
     }
 
     const data = await chrome.storage.local.get(match_key);
     if (data.includes(url)) {
-        console.log("already added.")
+        console.log("already added before.", data)
         return;
     }
     data.push(url);
