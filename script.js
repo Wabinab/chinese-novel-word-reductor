@@ -10,24 +10,24 @@
 //     restore_options();
 // });
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM content loaded");
-    restore_options();
-})
+// document.addEventListener('DOMContentLoaded', function() {
+//     console.log("DOM content loaded");
+//     restore_options();
+// })
 
-const activate = document.getElementById('activate');
-function restore_options() {
-    chrome.storage.local.get(["basic-script"]).then((result) => {
-        console.log("Value is: ");
-        console.log(result["basic-script"]);
-        console.log(result);
-        activate.checked = result ? true : false;
-    });
-    chrome.storage.local.get(["nonexistent"]).then((result) => {
-        console.log("nonexistent result is: ");
-        console.log(result);
-    });
-}
+// const activate = document.getElementById('activate');
+// function restore_options() {
+//     chrome.storage.local.get(["basic-script"]).then((result) => {
+//         console.log("Value is: ");
+//         console.log(result["basic-script"]);
+//         console.log(result);
+//         activate.checked = result ? true : false;
+//     });
+//     chrome.storage.local.get(["nonexistent"]).then((result) => {
+//         console.log("nonexistent result is: ");
+//         console.log(result);
+//     });
+// }
 
 // ================================================================
 activate.addEventListener('click', () => {
