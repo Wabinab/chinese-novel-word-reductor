@@ -5,5 +5,6 @@ const activate = document.getElementById('activate');
 
 // Initialize with user settings
 const data = await chrome.storage.local.get("basic-script");
-Object.assign(options, data["basic-script"]);
-activate.checked = Boolean(options.basic-script);
+activate.checked = data["basic-script"];
+// Object.assign(options, data["basic-script"]);
+// activate.checked = Boolean(options.basic-script);

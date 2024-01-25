@@ -30,10 +30,15 @@
 // }
 
 // ================================================================
-activate.addEventListener('click', () => {
-    if (activate.checked) { register_script(); }
+// activate.addEventListener('click', () => {
+//     if (activate.checked) { register_script(); }
+//     else { unregister_script(); }
+// });
+activate.addEventListener('change', (event) => {
+    var checked = event.target.checked;
+    if (checked) { register_script(); }
     else { unregister_script(); }
-});
+})
 
 function register_script() {
     chrome.scripting.registerContentScripts([{
