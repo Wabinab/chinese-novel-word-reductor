@@ -99,7 +99,7 @@ function onInstalled() {
         id: "basic-script",
         js: ["content-script.js"],
         persistAcrossSessions: true,
-        matches: [""],
+        matches: ["https://www.69xinshu.com/txt/0/*"],
     }])
     .then(() => { 
         console.log("oninstalled run (previously not run).");

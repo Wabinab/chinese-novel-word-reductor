@@ -3,7 +3,8 @@ chrome.runtime.onInstalled.addListener(() => {
         id: "basic-script",
         js: ["content-script.js"],
         persistAcrossSessions: true,
-        matches: [""],
+        // Must have a scheme, so we just set a "0" which may or may not be in use.
+        matches: ["https://www.69xinshu.com/txt/0/*"],
     }])
     .then(() => { 
         console.log("registration complete");
