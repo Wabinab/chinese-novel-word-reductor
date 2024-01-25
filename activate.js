@@ -1,11 +1,22 @@
 const match_key = "matches-list";
 activate.addEventListener('change', async (event) => {
     var checked = event.target.checked;
-    if (checked) { await register_script(filtered_url()); }
-    else { await unregister_script(filtered_url()); }
+
+    chrome.tabs.query({active: true, lastFocusedWindow: true}, async (tabs) => {
+        let url = filtered_url(tabs[0].url);
+        if (checked) { await register_script(url); }
+        else { await unregister_script(url); }
+    });
 })
 
 async function register_script(url) {
+    var scripts = await chrome.scripting.getRegisteredContentScripts()
+    if (scripts.length == 0) { 
+        onInstalled(); 
+        setTimeout(() => register_script(url), 1500);
+        return;
+    }
+
     const start_url = "https://www.69xinshu.com/txt/";
     if (!url.includes(start_url)) {
         console.log("Not 69xinshu.", url);
@@ -35,7 +46,7 @@ async function register_script(url) {
     //     id: "basic-script",
     //     js: ["content-script.js"],
     //     persistAcrossSessions: true,
-    //     matches: ["*"],
+    //     matches: [""],
     // }])
     // .then(() => {
     //     console.log("registration complete");
@@ -73,10 +84,27 @@ async function unregister_script(url) {
     // });
 }
 
-function filtered_url() {
-    const href = window.location.href;
+function filtered_url(href) {
+    // const href = window.location.href;
     var g = href.split('/')
     g.pop();
     g.push('*');
     return g.join('/')
+}
+
+
+// Just in case onInstalled not running. 
+function onInstalled() {
+    chrome.scripting.registerContentScripts([{
+        id: "basic-script",
+        js: ["content-script.js"],
+        persistAcrossSessions: true,
+        matches: [""],
+    }])
+    .then(() => { 
+        console.log("oninstalled run (previously not run).");
+        chrome.storage.local.set({ "matches-list" : [] });
+        // chrome.storage.local.set({ "basic-script": true })
+    })
+    .catch((err) => console.warn("unexpected error during registration", err));
 }
