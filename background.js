@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
     }])
     .then(() => { 
         console.log("registration complete");
-        // document.getElementById('activate').checked = true;
+        chrome.storage.local.set({ "basic-script": true })
     })
     .catch((err) => console.warn("unexpected error during registration", err));
 });
