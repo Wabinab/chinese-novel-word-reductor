@@ -5,14 +5,21 @@
 //     });
 // });
 
+chrome.browserAction.onClicked.addListener(function(tab) {
+    console.log("browser action on clicked called");
+    restore_options();
+});
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM content loaded");
     restore_options();
 })
 
 const activate = document.getElementById('activate');
 function restore_options() {
     chrome.storage.local.get(["basic-script"]).then((result) => {
-        console.log("Value is: ", result);
+        console.log("Value is: ");
+        console.log(result);
         activate.checked = result.key;
     })
 }
