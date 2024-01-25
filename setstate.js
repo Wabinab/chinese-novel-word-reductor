@@ -7,11 +7,12 @@ const activate = document.getElementById('activate');
 // activate.checked = data["basic-script"];
 
 const data = await chrome.storage.local.get("matches-list");
-activate.checked = data["matches-list"].includes(filtered_url);
+chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
+    let url = filtered_url(tabs[0].url);
+    activate.checked = data["matches-list"].includes(url);
+});
 
-
-function filtered_url() {
-    const href = window.location.href;
+function filtered_url(href) {
     var g = href.split('/')
     g.pop();
     g.push('*');
