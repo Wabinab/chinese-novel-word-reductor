@@ -64,7 +64,7 @@ async function unregister_script(url) {
         console.log("cannot find index of this url from db.");
         return;
     }
-    data = data.splice(idx, 1);
+    data.splice(idx, 1);  // splice change in place. DO NOT ASSIGN IT!!!
 
     chrome.scripting.updateContentScripts([{
         id: "basic-script", 
