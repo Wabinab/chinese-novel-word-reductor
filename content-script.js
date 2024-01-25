@@ -24,6 +24,15 @@ try {
         || x.includes('“')
     );
 
+    // Check if first_line contains remnants first. 
+    if (first_line.includes(remnants[0])) {
+        remnants = remnants.slice(1);
+    }
+    // Check if last_line contains remnants last.
+    if (last_line.includes(remnants[remnants.length-1])) {
+        remnants = remnants.slice(0, paragraphs.length - 1);
+    }
+
     // Join back
     var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
 
