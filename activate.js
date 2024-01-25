@@ -23,7 +23,8 @@ async function register_script(url) {
         return;
     }
 
-    const data = await chrome.storage.local.get(match_key);
+    let data = await chrome.storage.local.get(match_key);
+    data = data["matches-list"];
     if (data.includes(url)) {
         console.log("already added before.", data)
         return;
@@ -57,6 +58,7 @@ async function register_script(url) {
 
 async function unregister_script(url) {
     let data = await chrome.storage.local.get(match_key);
+    data = data["matches-list"];
     const idx = data.indexOf(url);
     if (idx == -1) {
         console.log("cannot find index of this url from db.");
