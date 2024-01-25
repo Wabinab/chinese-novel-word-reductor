@@ -1,4 +1,3 @@
-const options = {};
 const activate = document.getElementById('activate');
 
 // Persist options will be done in script.js

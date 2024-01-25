@@ -20,7 +20,12 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.active) {
         chrome.scripting.getRegisteredContentScripts()
         .then(scripts => {
-            console.log(scripts);
+            if (scripts.find(c => c.id == "basic-script") && tab.url.includes("https://www.69xinshu.com/txt/")) {
+                chrome.scripting.executeScript({
+                    target: {tabId: tabId},
+                    files: ["content-script.js"]
+                });
+            }
         });
     }
 });
