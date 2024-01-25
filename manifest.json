@@ -9,5 +9,9 @@
   "permissions": ["scripting", "activeTab", "storage"],
   "action": {
     "default_popup": "hello.html"
-  }
+  },
+  "content_script": [{
+    "matches": ["https://www.69xinshu.com/txt/*"],
+    "js": ["allrun-content-script.js"]
+  }]
 }
