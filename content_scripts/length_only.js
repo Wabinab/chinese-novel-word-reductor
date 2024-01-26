@@ -21,13 +21,14 @@ chrome.storage.local.get('breaklength').then((length) => {
     );
 
     // Check if first_line contains remnants first. 
-    if (first_line.includes(remnants[0])) {
+    if (first_line.includes(remnants[0].trim().replaceAll('\n', ''))) {
         remnants = remnants.slice(1);
     }
     // Check if last_line contains remnants last.
-    if (last_line.includes(remnants[remnants.length-1])) {
+    if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
         remnants = remnants.slice(0, paragraphs.length - 1);
     }
+    remnants = remnants.map(c => c.trimEnd());
 
     // Join back
     var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
