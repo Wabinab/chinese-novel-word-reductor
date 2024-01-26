@@ -129,7 +129,7 @@ function code_to_url(code) {
 function onInstalled() {
     chrome.scripting.registerContentScripts([{
         id: "length",
-        js: ["./content_scripts/length_only.js"],
+        js: ["../content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
@@ -140,7 +140,7 @@ function onInstalled() {
 
     chrome.scripting.registerContentScripts([{
         id: "len_speech",
-        js: ["./content_scripts/with_speech.js"],
+        js: ["../content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
@@ -148,4 +148,7 @@ function onInstalled() {
         console.log("oninstalled run len_speech (previously not run).");
         chrome.storage.local.set({ "len_speech" : [] });
     }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
+
+    // set breaklength default to 47.
+    chrome.storage.local.set({ "breaklength": 47 });
 }

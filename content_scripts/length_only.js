@@ -14,9 +14,9 @@ var last_remnant = remnants[remnants.length-1];
 var last_line = mainhtml.split(last_remnant)[1];
 
 // Filter now
-// We'll allow length definition later. 
-// For now, let's fix it to 50.
-remnants = remnants.filter(x =>  x.length >= 47 
+let length = await chrome.storage.local.get('breaklength');
+length = length['breaklength'];
+remnants = remnants.filter(x =>  x.length >= length 
     || x.trim().startsWith("【")
 );
 
