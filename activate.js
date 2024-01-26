@@ -55,22 +55,23 @@ async function register_script(url, key) {
     }
 
     let data = await chrome.storage.local.get(key);
+    let code = url_to_code(url);
     data = data[key];
-    if (data.includes(url)) {
+    if (data.includes(code)) {
         console.log("already added before.", data)
         return;
     }
-    data.push(url);
+    data.push(code);
     
     var dict = {};
     dict[key] = data;
 
     chrome.scripting.updateContentScripts([{
         id: key,
-        matches: data
+        matches: data.map(u => code_to_url(u))
     }])
     .then(() => {
-        console.log("Added website to ", key);
+        console.log("Added website to", key);
         chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during registration.", err));
@@ -79,7 +80,8 @@ async function register_script(url, key) {
 async function unregister_script(url, key) {
     let data = await chrome.storage.local.get(key);
     data = data[key];
-    const idx = data.indexOf(url);
+    let code = url_to_code(url);
+    const idx = data.indexOf(code);
     if (idx == -1) {
         console.log("cannot find index of this url from db.");
         return;
@@ -87,27 +89,39 @@ async function unregister_script(url, key) {
     data.splice(idx, 1);  // splice change in place. DO NOT ASSIGN IT!!!
 
     // Script must have at least one match, so. 
-    if (data.length == 0) data.push("https://www.69xinshu.com/txt/0/*");
+    if (data.length == 0) data.push("0");
 
     var dict = {};
     dict[key] = data;
 
     chrome.scripting.updateContentScripts([{
         id: key, 
-        matches: data
+        matches: data.map(u => code_to_url(u))
     }])
     .then(() => {
-        console.log("Removed website from ", key);
+        console.log("Removed website from", key);
         chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during unregistration.", err));
 }
 
+// ====================================================
 function filtered_url(href) {
     var g = href.split('/')
     g.pop();
     g.push('*');
     return g.join('/')
+}
+
+// Change url to save only the book code.
+function url_to_code(href) {
+    var g = href.split('/');
+    return g[4];
+}
+
+// Use code to url to reverse this. 
+function code_to_url(code) {
+    return `https://www.69xinshu.com/txt/${code}/*`;
 }
 
 
