@@ -18,7 +18,6 @@ var last_line = mainhtml.split(last_remnant)[1];
 // For now, let's fix it to 50.
 remnants = remnants.filter(x =>  x.length >= 47 
     || x.trim().startsWith("【")
-    || x.includes('“')
 );
 
 // Check if first_line contains remnants first. 

@@ -1,21 +1,25 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.scripting.registerContentScripts([{
-        id: "basic-script",
+        id: "length",
+        js: ["./content_scripts/length_only.js"],
+        persistAcrossSessions: true,
+        matches: ["https://www.69xinshu.com/txt/0/*"],
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }]).then(() => {
+        console.log("oninstalled run length (previously not run).");
+        chrome.storage.local.set({ "length": [] });
+    }).catch((err) => console.warn("unexpected err during registration length.", err));
+
+    chrome.scripting.registerContentScripts([{
+        id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        // Must have a scheme, so we just set a "0" which may or may not be in use.
         matches: ["https://www.69xinshu.com/txt/0/*"],
-        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"],
-    }])
-    .then(() => { 
-        console.log("registration complete");
-        chrome.storage.local.set({ "matches-list" : [] });
-        // chrome.storage.local.set({ "basic-script": true })
-    })
-    .catch((err) => console.warn("unexpected error during registration", err));
-
-    // Why not set beforehand? Because it wouldn't work for unknown reason.
-    // chrome.storage.local.set({ "basic-script": false });
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }]).then(() => { 
+        console.log("oninstalled run len_speech (previously not run).");
+        chrome.storage.local.set({ "len_speech" : [] });
+    }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
 });
 
 
@@ -29,35 +33,3 @@ chrome.runtime.onInstalled.addListener(() => {
 //         });
 //     }
 // });
-
-// chrome.runtime.onConnect(() => {
-//     chrome.scripting.getRegisteredContentScripts()
-//     .then(scripts => {
-//         if (scripts.find(c => c.id == "basic-script")) {
-//             unregister_and_reregister();
-//         }
-//     });
-// })
-
-// function unregister_and_reregister() {
-//     chrome.scripting.unregisterContentScripts({ 
-//         ids: ["basic-script"] 
-//     })
-//     .then(() => { 
-//         chrome.storage.local.set({ "basic-script": false });
-//         register_script();
-//     });
-// }
-
-// function register_script() {
-//     chrome.scripting.registerContentScripts([{
-//         id: "basic-script",
-//         js: ["content-script.js"],
-//         persistAcrossSessions: true,
-//         matches: ["https://www.69xinshu.com/txt/*"],
-//     }])
-//     .then(() => {
-//         chrome.storage.local.set({ "basic-script": true })
-//     })
-//     .catch((err) => console.warn("unexpected error during registration", err));
-// }

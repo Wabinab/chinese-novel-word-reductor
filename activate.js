@@ -1,26 +1,46 @@
-const match_key = "matches-list";
+// const match_key = "matches-list";
 const length = document.getElementById('length');
 const len_speech = document.getElementById('len_speech');
 
 length.addEventListener('change', async (event) => {
-    var checked = event.target.checked;
-    if (len_speech.checked) len_speech.checked = false;
+    if (len_speech.checked) {
+        len_speech.checked = false;
+        on_lenspeech_change(false);
+    }
 
-    chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
-        let url = filtered_url(tabs[0].url);
-        if (checked) { await register_script(url); }
-        else { await unregister_script(url); }
-    });
+    on_len_change(event.target.checked);
 })
 
-len_speech.addEventListener('change', async (event) => {
-    var checked = event.target.checked;
-    console.log(checked);
+function on_len_change(checked) {
+    // var checked = length.checked;
+    chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
+        let url = filtered_url(tabs[0].url);
+        if (checked) { await register_script(url, "length"); }
+        else { await unregister_script(url, "length"); }
+    });
+}
 
-    if (length.checked) length.checked = false;
+len_speech.addEventListener('change', async (event) => {
+    if (length.checked) {
+        length.checked = false;
+        on_len_change(false);
+    }
+
+    on_lenspeech_change(event.target.checked);
 });
 
-async function register_script(url) {
+function on_lenspeech_change(checked) {
+    // var checked = len_speech.checked;
+    chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
+        let url = filtered_url(tabs[0].url);
+        if (checked) { await register_script(url, "len_speech"); }
+        else { await unregister_script(url, "len_speech"); }
+    })
+}
+
+
+// ======================================================================
+async function register_script(url, key) {
     var scripts = await chrome.scripting.getRegisteredContentScripts()
     if (scripts.length == 0) { 
         onInstalled(); 
@@ -34,42 +54,31 @@ async function register_script(url) {
         return;
     }
 
-    let data = await chrome.storage.local.get(match_key);
-    data = data["matches-list"];
+    let data = await chrome.storage.local.get(key);
+    data = data[key];
     if (data.includes(url)) {
         console.log("already added before.", data)
         return;
     }
     data.push(url);
+    
+    var dict = {};
+    dict[key] = data;
 
     chrome.scripting.updateContentScripts([{
-        id: "basic-script",
+        id: key,
         matches: data
     }])
     .then(() => {
-        console.log("Script updated to include: ");
-        console.log(data);
-        chrome.storage.local.set({ "matches-list": data });
+        console.log("Added website to ", key);
+        chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during registration.", err));
-
-
-    // chrome.scripting.registerContentScripts([{
-    //     id: "basic-script",
-    //     js: ["content-script.js"],
-    //     persistAcrossSessions: true,
-    //     matches: [""],
-    // }])
-    // .then(() => {
-    //     console.log("registration complete");
-    //     chrome.storage.local.set({ "basic-script": true })
-    // })
-    // .catch((err) => console.warn("unexpected error during registration", err));
 }
 
-async function unregister_script(url) {
-    let data = await chrome.storage.local.get(match_key);
-    data = data["matches-list"];
+async function unregister_script(url, key) {
+    let data = await chrome.storage.local.get(key);
+    data = data[key];
     const idx = data.indexOf(url);
     if (idx == -1) {
         console.log("cannot find index of this url from db.");
@@ -78,32 +87,23 @@ async function unregister_script(url) {
     data.splice(idx, 1);  // splice change in place. DO NOT ASSIGN IT!!!
 
     // Script must have at least one match, so. 
-    if (data.length == 0) {
-        data.push("https://www.69xinshu.com/txt/0/*");
-    }
+    if (data.length == 0) data.push("https://www.69xinshu.com/txt/0/*");
+
+    var dict = {};
+    dict[key] = data;
 
     chrome.scripting.updateContentScripts([{
-        id: "basic-script", 
+        id: key, 
         matches: data
     }])
     .then(() => {
-        console.log("Script updated to remove, now left: ");
-        console.log(data);
-        chrome.storage.local.set({ "matches-list": data })
+        console.log("Removed website from ", key);
+        chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during unregistration.", err));
-
-    // chrome.scripting.unregisterContentScripts({ 
-    //     ids: ["basic-script"] 
-    // })
-    // .then(() => { 
-    //     console.log("un-registration complete");
-    //     chrome.storage.local.set({ "basic-script": false })
-    // });
 }
 
 function filtered_url(href) {
-    // const href = window.location.href;
     var g = href.split('/')
     g.pop();
     g.push('*');
@@ -114,15 +114,24 @@ function filtered_url(href) {
 // Just in case onInstalled not running. 
 function onInstalled() {
     chrome.scripting.registerContentScripts([{
-        id: "basic-script",
+        id: "length",
+        js: ["./content_scripts/length_only.js"],
+        persistAcrossSessions: true,
+        matches: ["https://www.69xinshu.com/txt/0/*"],
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }]).then(() => {
+        console.log("oninstalled run length (previously not run).");
+        chrome.storage.local.set({ "length": [] });
+    }).catch((err) => console.warn("unexpected err during registration length.", err));
+
+    chrome.scripting.registerContentScripts([{
+        id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
-    }])
-    .then(() => { 
-        console.log("oninstalled run (previously not run).");
-        chrome.storage.local.set({ "matches-list" : [] });
-        // chrome.storage.local.set({ "basic-script": true })
-    })
-    .catch((err) => console.warn("unexpected error during registration", err));
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }]).then(() => { 
+        console.log("oninstalled run len_speech (previously not run).");
+        chrome.storage.local.set({ "len_speech" : [] });
+    }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
 }
