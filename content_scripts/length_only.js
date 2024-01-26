@@ -14,22 +14,23 @@ var last_remnant = remnants[remnants.length-1];
 var last_line = mainhtml.split(last_remnant)[1];
 
 // Filter now
-let length = await chrome.storage.local.get('breaklength');
-length = length['breaklength'];
-remnants = remnants.filter(x =>  x.length >= length 
-    || x.trim().startsWith("【")
-);
+chrome.storage.local.get('breaklength').then((length) => {
+    length = length['breaklength'];
+    remnants = remnants.filter(x =>  x.length >= length 
+        || x.trim().startsWith("【")
+    );
 
-// Check if first_line contains remnants first. 
-if (first_line.includes(remnants[0])) {
-    remnants = remnants.slice(1);
-}
-// Check if last_line contains remnants last.
-if (last_line.includes(remnants[remnants.length-1])) {
-    remnants = remnants.slice(0, paragraphs.length - 1);
-}
+    // Check if first_line contains remnants first. 
+    if (first_line.includes(remnants[0])) {
+        remnants = remnants.slice(1);
+    }
+    // Check if last_line contains remnants last.
+    if (last_line.includes(remnants[remnants.length-1])) {
+        remnants = remnants.slice(0, paragraphs.length - 1);
+    }
 
-// Join back
-var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
+    // Join back
+    var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
 
-document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
+    document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
+});
