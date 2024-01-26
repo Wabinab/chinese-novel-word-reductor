@@ -1,6 +1,10 @@
 const match_key = "matches-list";
-activate.addEventListener('change', async (event) => {
+const length = document.getElementById('length');
+const len_speech = document.getElementById('len_speech');
+
+length.addEventListener('change', async (event) => {
     var checked = event.target.checked;
+    if (len_speech.checked) len_speech.checked = false;
 
     chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
         let url = filtered_url(tabs[0].url);
@@ -8,6 +12,13 @@ activate.addEventListener('change', async (event) => {
         else { await unregister_script(url); }
     });
 })
+
+len_speech.addEventListener('change', async (event) => {
+    var checked = event.target.checked;
+    console.log(checked);
+
+    if (length.checked) length.checked = false;
+});
 
 async function register_script(url) {
     var scripts = await chrome.scripting.getRegisteredContentScripts()
@@ -104,7 +115,7 @@ function filtered_url(href) {
 function onInstalled() {
     chrome.scripting.registerContentScripts([{
         id: "basic-script",
-        js: ["content-script.js"],
+        js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
     }])

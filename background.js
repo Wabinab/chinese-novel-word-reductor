@@ -1,10 +1,11 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.scripting.registerContentScripts([{
         id: "basic-script",
-        js: ["content-script.js"],
+        js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         // Must have a scheme, so we just set a "0" which may or may not be in use.
         matches: ["https://www.69xinshu.com/txt/0/*"],
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"],
     }])
     .then(() => { 
         console.log("registration complete");
