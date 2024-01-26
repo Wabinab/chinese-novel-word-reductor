@@ -25,14 +25,33 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0 });
 });
 
+const len_key = 'length';
+const speech_key = 'len_speech';
+chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete' && tab.active) {
+        let datakeys = await chrome.storage.local.get([len_key, speech_key]);
+        let script = await chrome.scripting.getRegisteredContentScripts();
+        if (script.length == 0 && datakeys[len_key] == 0 && datakeys[speech_key] == 0) {
+            recreate(datakeys);
+        }
+    }
+});
 
-// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-//     if (changeInfo.status == 'complete' && tab.active) {
-//         chrome.scripting.getRegisteredContentScripts()
-//         .then(scripts => {
-//             if (scripts.find(c => c.id == "basic-script")) {
-//                 unregister_and_reregister();
-//             }
-//         });
-//     }
-// });
+function recreate(datakeys) {
+    chrome.scripting.registerContentScripts([{
+        id: "length",
+        js: ["../content_scripts/length_only.js"],
+        persistAcrossSessions: true,
+        matches: datakeys["length"].map(u => code_to_url(u)),
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }, {
+        id: "len_speech",
+        js: ["../content_scripts/with_speech.js"],
+        persistAcrossSessions: true,
+        matches: datakeys["len_speech"].map(u => code_to_url(u)),
+        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+    }]).then(() => {
+        console.log("recreate content scripts.");
+        // chrome.storage is still saved, otherwise we can't create matches.
+    }).catch((err) => console.warn("unexpected err during recreation.", err));
+}
