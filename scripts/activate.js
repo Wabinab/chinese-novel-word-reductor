@@ -138,13 +138,13 @@ function code_to_url(code) {
 function onInstalled() {
     chrome.scripting.registerContentScripts([{
         id: "length",
-        js: ["../content_scripts/length_only.js"],
+        js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
     }, {
         id: "len_speech",
-        js: ["../content_scripts/with_speech.js"],
+        js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: ["https://www.69xinshu.com/txt/0/*"],
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
@@ -173,13 +173,13 @@ function onInstalled() {
 function recreate(datakeys) {
     chrome.scripting.registerContentScripts([{
         id: "length",
-        js: ["../content_scripts/length_only.js"],
+        js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys["length"].map(u => code_to_url(u)),
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
     }, {
         id: "len_speech",
-        js: ["../content_scripts/with_speech.js"],
+        js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys["len_speech"].map(u => code_to_url(u)),
         excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
