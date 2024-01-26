@@ -16,12 +16,22 @@
         <label class="form-check-label" for="len_speech">Length + Speech</label>
       </div>
       <div class="pt-3"></div>
+
       <div class="input-group mb-3">
-        <span class="input-group-text">Length Threshold</span>
+        <span class="input-group-text">Len Min</span>
         <input type="number" min="7" max="150" step="1" class="form-control" id="breaklength" />
         <button class="btn btn-primary" type="button" id="breaklength_btn">Save</button>
       </div>
+      <span id="breaklength_scs" class="text-success"></span>
       <span id="breaklength_err" class="text-danger"></span>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Speech Min</span>
+        <input type="number" min="0" max="150" step="1" class="form-control" id="breakspeech" />
+        <button class="btn btn-primary" type="button" id="breakspeech_btn">Save</button>
+      </div>
+      <span id="breakspeech_scs" class="text-success"></span>
+      <span id="breakspeech_err" class="text-danger"></span>
     </div>
 
     <script src="./scripts/activate.js"></script>

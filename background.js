@@ -22,7 +22,7 @@ chrome.runtime.onInstalled.addListener(() => {
     }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
 
     // set breaklength default to 47.
-    chrome.storage.local.set({ "breaklength": 47 });
+    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0 });
 });
 
 
