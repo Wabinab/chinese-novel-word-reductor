@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "69xinshu removal",
   "description": "New Removal for 69xinshu for specific page.",
-  "version": "1.2",
+  "version": "1.3",
   "background": {
     "service_worker": "background.js",
     "type": "module"
@@ -10,5 +10,9 @@
   "permissions": ["scripting", "activeTab", "storage"],
   "action": {
     "default_popup": "hello.html"
-  }
+  },
+  "content_scripts": [{
+    "matches": ["https://www.31xiaoshuo.com/*/*/*.html"],
+    "css": ["./content_scripts/31xiaoshuo_bg.css"]
+  }]
 }

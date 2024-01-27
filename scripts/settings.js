@@ -30,3 +30,16 @@ brkspeech_btn.addEventListener('click', async (event) => {
         setTimeout(() => { brkspeech_scs.textContent = ""; }, 1500);
     } else brkspeech_err.textContent = "length must be between 0 and 150, inclusive.";
 });
+
+// ===================================================================
+let site_field = document.getElementById('sitename');
+let site_btn = document.getElementById('sitename_btn');
+let site_scs = document.getElementById('sitename_scs');
+// let site_err = document.getElementById('sitename_err');
+
+site_btn.addEventListener('click', async (event) => {
+    let site_val = site_field.value;
+    chrome.storage.local.set({ "sitename": site_val });
+    site_scs = "Saved."
+    setTimeout(() => { site_scs.textContent = ""; }, 1500);
+})

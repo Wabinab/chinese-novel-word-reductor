@@ -1,5 +1,6 @@
 const len_key = 'length';
 const speech_key = 'len_speech';
+const site_key = 'sitename';
 const length = document.getElementById(len_key);
 const len_speech = document.getElementById(speech_key);
 
@@ -43,7 +44,7 @@ function on_lenspeech_change(checked) {
 // ======================================================================
 async function register_script(url, key) {
     var scripts = await chrome.scripting.getRegisteredContentScripts()
-    let datakeys = await chrome.storage.local.get([len_key, speech_key]);
+    let datakeys = await chrome.storage.local.get([len_key, speech_key, site_key]);
     if (scripts.length == 0) { 
         if (datakeys[len_key].length == 0 && datakeys[speech_key].length == 0) {
             onInstalled(); 
@@ -57,9 +58,9 @@ async function register_script(url, key) {
         return;
     }
 
-    const start_url = "https://www.69xinshu.com/txt/";
+    const start_url = `https://www.${datakeys[site_key]}.com/txt/`;
     if (!url.includes(start_url)) {
-        console.log("Not 69xinshu.", url);
+        console.log(`Not ${site_key}.`, url);
         return;
     }
 
@@ -77,7 +78,7 @@ async function register_script(url, key) {
 
     chrome.scripting.updateContentScripts([{
         id: key,
-        matches: data.map(u => code_to_url(u))
+        matches: data.map(u => code_to_url(u, datakeys[site_key]))
     }])
     .then(() => {
         console.log("Added website to", key);
@@ -87,7 +88,7 @@ async function register_script(url, key) {
 }
 
 async function unregister_script(url, key) {
-    let data = await chrome.storage.local.get(key);
+    let data = await chrome.storage.local.get([key, site_key]);
     data = data[key];
     let code = url_to_code(url);
     const idx = data.indexOf(code);
@@ -105,7 +106,7 @@ async function unregister_script(url, key) {
 
     chrome.scripting.updateContentScripts([{
         id: key, 
-        matches: data.map(u => code_to_url(u))
+        matches: data.map(u => code_to_url(u, datakeys[site_key]))
     }])
     .then(() => {
         console.log("Removed website from", key);
@@ -129,8 +130,8 @@ function url_to_code(href) {
 }
 
 // Use code to url to reverse this. 
-function code_to_url(code) {
-    return `https://www.69xinshu.com/txt/${code}/*`;
+function code_to_url(code, site_key) {
+    return `https://www.${site_key}.com/txt/${code}/*`;
 }
 
 
@@ -165,24 +166,26 @@ function onInstalled() {
     // }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
 
     // set breaklength default to 47.
-    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0 });
+    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0, "sitename": "69xinshu" });
 }
 
 
 // re-create content script (usually after restart computer they're lost in Brave browser)
-function recreate(datakeys) {
+async function recreate(datakeys) {
+    // let sitename = await chrome.storage.local.get(site_key);
+    // sitename = sitename[site_key];
     chrome.scripting.registerContentScripts([{
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: datakeys["length"].map(u => code_to_url(u)),
-        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+        matches: datakeys["length"].map(u => code_to_url(u, datakeys[site_key])),
+        excludeMatches: [`https://www.${datakeys[site_key]}.com/txt/*/end.html`]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: datakeys["len_speech"].map(u => code_to_url(u)),
-        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+        matches: datakeys["len_speech"].map(u => code_to_url(u, datakeys[site_key])),
+        excludeMatches: [`https://www.${datakeys[site_key]}.com/txt/*/end.html`]
     }]).then(() => {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.

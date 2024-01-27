@@ -26,7 +26,7 @@ chrome.storage.local.get('breaklength').then((length) => {
     }
     // Check if last_line contains remnants last.
     if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
-        remnants = remnants.slice(0, paragraphs.length - 1);
+        remnants = remnants.slice(0, remnants.length - 1);
     }
     remnants = remnants.map(c => c.trimEnd());
 

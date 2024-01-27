@@ -2,15 +2,18 @@ const len_key = 'length';
 const speech_key = 'len_speech';
 const brklen_key = 'breaklength';
 const brkspeech_key = 'breakspeech';
+const site_key = 'sitename';
 const length = document.getElementById(len_key);
 const len_speech = document.getElementById(speech_key);
 const brklen_field = document.getElementById(brklen_key);
 const brkspeech_field = document.getElementById(brkspeech_key);
+const site_field = document.getElementById(site_key);
 
 // Persist options will be done in script.js
 
 const data = await chrome.storage.local.get([
-    len_key, speech_key, brklen_key, brkspeech_key
+    len_key, speech_key, brklen_key, brkspeech_key,
+    site_key
 ]);
 chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     let url = url_to_code(tabs[0].url);
@@ -19,5 +22,6 @@ chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     
     brklen_field.value = data[brklen_key];
     brkspeech_field.value = data[brkspeech_key];
+    site_field.value = data[site_key];
 });
 
