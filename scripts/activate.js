@@ -88,8 +88,8 @@ async function register_script(url, key) {
 }
 
 async function unregister_script(url, key) {
-    let data = await chrome.storage.local.get([key, site_key]);
-    data = data[key];
+    let datakeys = await chrome.storage.local.get([key, site_key]);
+    let data = datakeys[key];
     let code = url_to_code(url);
     const idx = data.indexOf(code);
     if (idx == -1) {

@@ -12,7 +12,7 @@
     "default_popup": "hello.html"
   },
   "content_scripts": [{
-    "matches": ["https://www.31xiaoshuo.com/*/*/*.html"],
+    "matches": ["https://www.31xiaoshuo.com/*.html"],
     "css": ["./content_scripts/31xiaoshuo_bg.css"]
   }]
 }
