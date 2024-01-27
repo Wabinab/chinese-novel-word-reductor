@@ -33,6 +33,10 @@ chrome.storage.local.get(['breaklength', 'breakspeech']).then((result) => {
         if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
             remnants = remnants.slice(0, remnants.length - 1);
         }
+        // Check if last_remnant equals remnants last. 
+        if (last_remnant.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
+            remnants = remnants.slice(0, remnants.length - 1);
+        }
     }
     remnants = remnants.map(c => c.trimEnd());
 
