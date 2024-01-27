@@ -24,13 +24,15 @@ chrome.storage.local.get(['breaklength', 'breakspeech']).then((result) => {
         || (x.includes('“') && x.length >= speech)
     );
 
-    // Check if first_line contains remnants first. 
-    if (first_line.includes(remnants[0].trim().replaceAll('\n', ''))) {
-        remnants = remnants.slice(1);
-    }
-    // Check if last_line contains remnants last.
-    if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
-        remnants = remnants.slice(0, remnants.length - 1);
+    if (remnants.length > 0) {
+        // Check if first_line contains remnants first. 
+        if (first_line.includes(remnants[0].trim().replaceAll('\n', ''))) {
+            remnants = remnants.slice(1);
+        }
+        // Check if last_line contains remnants last.
+        if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
+            remnants = remnants.slice(0, remnants.length - 1);
+        }
     }
     remnants = remnants.map(c => c.trimEnd());
 
