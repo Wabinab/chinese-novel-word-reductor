@@ -10,13 +10,14 @@ chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     if (datakeys[len_key].includes(url)) filename = "./content_scripts/length_only.js";
     else if (datakeys[speech_key].includes(url)) filename = "./content_scripts/with_speech.js";
 
-    if (filename != '') {
-        redo_btn.addEventListener('click', async (event) => {
+    redo_btn.addEventListener('click', async (event) => {
+        if (filename != '') {
             chrome.scripting.executeScript({
                 target: {tabId: tabId},
                 files: [filename]
             }).then(() => console.log("script executed one more time."));
-        });
-    } else console.log("filename not defined. You didn't activate any?");
+        } else console.log("filename not defined. You didn't activate any?");
+    });
+   
 
 });
