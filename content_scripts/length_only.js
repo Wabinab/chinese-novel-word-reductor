@@ -16,25 +16,24 @@ var last_line = mainhtml.split(last_remnant)[1];
 // Filter now
 chrome.storage.local.get('breaklength').then((length) => {
     length = length['breaklength'];
+    remnants = remnants.map(c => c.trimEnd());
     remnants = remnants.filter(x =>  x.length >= length 
         || x.trim().startsWith("【")
     );
 
-    if (remnants.length > 0) {
-        // Check if first_line contains remnants first. 
-        if (first_line.includes(remnants[0].trim().replaceAll('\n', ''))) {
-            remnants = remnants.slice(1);
-        }
-        // Check if last_line contains remnants last.
-        if (last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
-            remnants = remnants.slice(0, remnants.length - 1);
-        }
-        // Check if last_remnant equals remnants last. 
-        if (last_remnant.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
-            remnants = remnants.slice(0, remnants.length - 1);
-        }
+
+    // Check if first_line contains remnants first. 
+    if (remnants.length > 0 && first_line.includes(remnants[0].trim().replaceAll('\n', ''))) {
+        remnants = remnants.slice(1);
     }
-    remnants = remnants.map(c => c.trimEnd());
+    // Check if last_line contains remnants last.
+    if (remnants.length > 0 && last_line.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
+        remnants = remnants.slice(0, remnants.length - 1);
+    }
+    // Check if last_remnant equals remnants last. 
+    if (remnants.length > 0 && last_remnant.includes(remnants[remnants.length-1].trim().replaceAll('\n', ''))) {
+        remnants = remnants.slice(0, remnants.length - 1);
+    }
 
     // Join back
     var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
