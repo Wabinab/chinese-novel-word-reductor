@@ -11,7 +11,7 @@ remnants = remnants.map(c => c.split('\n').flat()).flat();
 remnants = remnants.filter(c => c != '');  // not empty
 var first_line = mainhtml.split(remnants[1])[0];
 var last_remnant = remnants[remnants.length-1];
-var last_line = mainhtml.split(last_remnant)[1];
+var last_line = mainhtml.split(last_remnant)[1].replaceAll('\n<br>\n', '');
 
 // Filter now
 // We'll allow length definition later. 
