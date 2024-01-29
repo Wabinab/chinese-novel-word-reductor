@@ -40,7 +40,7 @@ chrome.storage.local.get('breaklength').then((length) => {
     }
 
     // Join back
-    var final_html = `${first_line}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
+    var final_html = `${first_line.trimEnd()}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
 
     document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
 });
