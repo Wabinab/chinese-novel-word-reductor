@@ -2,8 +2,9 @@ const len_key = 'length';
 const speech_key = 'len_speech';
 let filename = '';
 let redo_btn = document.getElementById('redo_again');
+let reset_btn = document.getElementById('reset');
 
-const datakeys = await chrome.storage.local.get([len_key, speech_key]);
+const datakeys = await chrome.storage.local.get([len_key, speech_key, site_key]);
 chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     let url = url_to_code(tabs[0].url);
     let tabId = tabs[0].id
@@ -19,5 +20,8 @@ chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
         } else console.log("filename not defined. You didn't activate any?");
     });
    
-
+    reset_btn.addEventListener('click', async (event) => {
+        console.log('restarting.');
+        restart(datakeys);
+    });
 });

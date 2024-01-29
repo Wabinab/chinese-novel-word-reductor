@@ -154,17 +154,6 @@ function onInstalled() {
         chrome.storage.local.set({ "length": [], "len_speech": [] });
     }).catch((err) => console.warn("unexpected err during registration.", err));
 
-    // chrome.scripting.registerContentScripts([{
-    //     id: "len_speech",
-    //     js: ["../content_scripts/with_speech.js"],
-    //     persistAcrossSessions: true,
-    //     matches: ["https://www.69xinshu.com/txt/0/*"],
-    //     excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
-    // }]).then(() => { 
-    //     console.log("oninstalled run len_speech (previously not run).");
-    //     chrome.storage.local.set({ "len_speech" : [] });
-    // }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
-
     // set breaklength default to 47.
     chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0, "sitename": "69xinshu" });
 }
@@ -190,4 +179,12 @@ async function recreate(datakeys) {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.
     }).catch((err) => console.warn("unexpected err during recreation.", err));
+}
+
+
+// Remove all existing
+async function restart(datakeys) {
+    chrome.scripting.unregisterContentScripts([len_key, speech_key]).then(() => {
+        recreate(datakeys);
+    });
 }
