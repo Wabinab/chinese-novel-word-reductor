@@ -9,9 +9,12 @@ var paragraphs = maintext.split("\n\n");
 var remnants = paragraphs.slice(1, paragraphs.length - 1);
 remnants = remnants.map(c => c.split('\n').flat()).flat();
 remnants = remnants.filter(c => c != '');  // not empty
-var first_line = mainhtml.split(paragraphs[1].trim().replaceAll('\n', ''))[0];
+
+var first_line = mainhtml.split(paragraphs[1].trim())[0];
+if (first_line.length > 2000) first_line = mainhtml.split(remnants[1].trim())[0];
+if (first_line.length > 2000) first_line = mainhtml.split('\n\n')[0];
 var last_remnant = remnants[remnants.length-1];
-var last_line = mainhtml.split(last_remnant.trim().replace('\n', '')).pop().replaceAll('\n<br>\n', '');
+var last_line = mainhtml.split(last_remnant.trim()).pop().replaceAll('\n<br>\n', '');
 
 // Filter now
 // We'll allow length definition later. 
