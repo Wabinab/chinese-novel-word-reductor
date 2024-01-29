@@ -11,8 +11,10 @@
     "default_popup": "hello.html"
   },
   "content_scripts": [{
-    "matches": ["https://www.31xiaoshuo.com/*"],
-    "css": ["./content_scripts/31xiaoshuo_bg.css"],
+    "matches": ["https://www.31xiaoshuo.com/*/*/*.html"],
     "js": ["./content_scripts/31xiaoshuo_bg.js"]
+  }, {
+    "matches": ["https://www.ddxs.com/*/*.html"],
+    "js": ["./content_scripts/ddxs_bg.js"]
   }]
 }
