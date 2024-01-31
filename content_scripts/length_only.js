@@ -11,7 +11,7 @@ remnants = remnants.filter(c => c != '');  // not empty
 
 var first_line = mainhtml.split(paragraphs[1].trim())[0];
 if (first_line.length > 2000) first_line = mainhtml.split(remnants[1].trim())[0];
-if (first_line.length > 2000) first_line = mainhtml.split('\n\n')[0];
+if (first_line.length > 2000) first_line = mainhtml.split('\n<br><br>\n')[0] + '\n<br><br>\n';
 var last_remnant = remnants[remnants.length-1];
 var last_line = mainhtml.split(last_remnant.trim()).pop().replaceAll('\n<br>\n', '');
 
