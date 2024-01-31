@@ -28,6 +28,21 @@ As for the white button on the right side, sometimes, your target doesn't do its
 
 That's it for the introduction. Next, let's discuss
 
+## How To Install
+Easy. First, you'd need to clone this repo (or for those non-git user, click download zip):
+![Alt text](./content_scripts/image1.png)
+
+Unpacked the zip file (don't need me to teach you how, right?) Then, you need to allow import this into your browser. In Brave browser, that's going to "manage your extension"
+![Alt text](./content_scripts/image2.png)
+
+Activate developer mode
+![Alt text](./content_scripts/image3.png)
+
+Load unpacked
+![Alt text](./content_scripts/image4.png)
+
+Then just choose the folder where you'd unzip your file just now, probably a folder named chinese-novel-word-reductor. **If your folder have another layer, that is, this file is inside, say, `chinese-novel-word-reductor/chinese-novel-word-reductor/README.md`, then you should open the inner `chinese-novel-word-reductor` folder instead of the outer one.** That's it! 
+
 ## How To Use
 When you visit a page like https://www.69xinshu.com/txt/54562/36854717, you can open the extension and click whether you want length only or length with speech. **Reload the page after updating your choice.** (If it doesn't work, check that it is ticked again. If it isn't, do it again, close the extension window, and reload again.) Now, you should see it work. 
 
