@@ -20,6 +20,7 @@ Both, in usual case, can be detected; unless it's put on top of the page as the 
 Of course, it has additionally other stuffs, like change the background color of `ddxs` and `31xiaoshuo` site to match what one wants; but that isn't supported for the main functionality, just a sidetracked stuff that you can ignore. 
 
 Beside the title, there is a red button on the LHS. That button is for **resubscription.** Note, when your computer shut off unexpectedly, either due to computer have problems (like mine does), or power trip, or computer too hot it shut off automatically, etc. The extension will fail. The failure sometimes are minor, like it cannot reinitialize itself back, therefore you can either use this red button, or go to your browser's `Extension -> ` then find the extension and press refresh. 
+
 ![Refresh button in managing extension, Brave Browser](./readme_assets/image.png)
 
 Note, the refresh above will **clear your storage**, that's why we have the red button. However, **unexpected shut down can clear your storage without warning, as tested**, so in that case, you might need to set back your settings again. 
@@ -30,16 +31,20 @@ That's it for the introduction. Next, let's discuss
 
 ## How To Install
 Easy. First, you'd need to clone this repo (or for those non-git user, click download zip):
-![Alt text](./content_scripts/image1.png)
+
+![Download Zip](./readme_assets/image1.png)
 
 Unpacked the zip file (don't need me to teach you how, right?) Then, you need to allow import this into your browser. In Brave browser, that's going to "manage your extension"
-![Alt text](./content_scripts/image2.png)
+
+![Open extension in browser page](./readme_assets/image2.png)
 
 Activate developer mode
-![Alt text](./content_scripts/image3.png)
+
+![Activate developer mode](./readme_assets/image3.png)
 
 Load unpacked
-![Alt text](./content_scripts/image4.png)
+
+![Load unpacked](./readme_assets/image4.png)
 
 Then just choose the folder where you'd unzip your file just now, probably a folder named chinese-novel-word-reductor. **If your folder have another layer, that is, this file is inside, say, `chinese-novel-word-reductor/chinese-novel-word-reductor/README.md`, then you should open the inner `chinese-novel-word-reductor` folder instead of the outer one.** That's it! 
 
