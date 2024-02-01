@@ -184,7 +184,11 @@ async function recreate(datakeys) {
 
 // Remove all existing
 async function restart(datakeys) {
-    chrome.scripting.unregisterContentScripts([len_key, speech_key]).then(() => {
-        recreate(datakeys);
+    chrome.scripting.getRegisteredContentScripts().then((results) => {
+        // Not all content scripts are registered at this point. 
+        // One error encountered where len_speech exist, but not length. 
+        chrome.scripting.unregisterContentScripts(results.map(c => c.id)).then(() => {
+            recreate(datakeys);
+        });
     });
 }
