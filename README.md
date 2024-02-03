@@ -29,12 +29,24 @@ As for the white button on the right side, sometimes, your target doesn't do its
 
 That's it for the introduction. Next, let's discuss
 
-## How To Install
+## Difference between `dynamic-extension` and `static extension`
+Here are the comparisons
+
+| Dynamic | Static |
+| --- | --- |
+| Can choose between `length only` and `length + speech` for each XiaoShuo | Cannot ... |
+| Manual choose `length only` and `length + speech` | Auto, where you can set breakpoints |
+| Can change website name if `69xinshu` changed | Cannot ... |
+| You need to click on the extension every time your browser sleeps/restart computer | It run automatically without clicking browser extension |
+| If your computer fail unexpectedly, like power trip, saved state might be gone | Haven't met a situation where it will be gone. |
+| Turned off by default, and can be turned off | Turned on by default, and cannot be turned off |
+
+## How To Install (Both Dynamic and Static)
 Easy. First, you'd need to clone this repo (or for those non-git user, click download zip):
 
 ![Download Zip](./readme_assets/image1.png)
 
-Unpacked the zip file (don't need me to teach you how, right?) Then, you need to allow import this into your browser. In Brave browser, that's going to "manage your extension"
+Unpacked the zip file (don't need me to teach you how, right?) Then, you need to allow import this **either the `dynamic-extension` or the `static-extension`** into your browser. In Brave browser, that's going to "manage your extension"
 
 ![Open extension in browser page](./readme_assets/image2.png)
 
@@ -48,7 +60,7 @@ Load unpacked
 
 Then just choose the folder where you'd unzip your file just now, probably a folder named chinese-novel-word-reductor. **If your folder have another layer, that is, this file is inside, say, `chinese-novel-word-reductor/chinese-novel-word-reductor/README.md`, then you should open the inner `chinese-novel-word-reductor` folder instead of the outer one.** That's it! 
 
-## How To Use
+## How To Use (Dynamic)
 When you visit a page like https://www.69xinshu.com/txt/54562/36854717, you can open the extension and click whether you want length only or length with speech. **Reload the page after updating your choice.** (If it doesn't work, check that it is ticked again. If it isn't, do it again, close the extension window, and reload again.) Now, you should see it work. 
 
 If you restart your computer, unfortunately, the extension doesn't immediately work. You have to **open the extension window, then close it, to trigger the content script.** NOTE: this error only exist in dynamic content scripts like 69shu; but for static content script like ddxs and 31xiaoshuo, this isn't required nor reset by restarting computer normally. 
@@ -58,6 +70,25 @@ NOTE: **the setting is site specific.** E.g. going to https://www.69xinshu.com/t
 You can change how long you want for length min (7 - 150 characters), and speech min (0 - 150 characters); and since 69shu has been changing site name frequently (from 69shu to 69shuba to 69xinshu), we allowed for you to change site name too! 
 
 Finally, **note that this doesn't include all cases. There are some cases where the extension will fail; and certainly the extension isn't perfect in cancelling all, esp. at the starting of the page and ending of page, so you'll have to bear with the imperfection (or don't use the extension if you need perfection, for your sake).** If you note any large problems, do write an issue in [github issue](https://github.com/Wabinab/chinese-novel-word-reductor/issues). 
+
+## How To Use (Static)
+It'll run automatically. Though, you can make manual change to the preference setting. However, **if you computer keep crashing**, like mine does, it's best recommended that you change the setting **not from the extension popup, but from the source code `static-extension/background.js`** value. In that case: 
+- `Len Min` is `brklen`.
+- `Speech Min` is `brkspch`.
+- `% Speech` is `p_spch`.
+- `% Length` is `p_len`.
+
+## Understanding "% Speech" and "% Length" (Static)
+Let's say, your `Len Min` is 47, "% Speech" = 70%, "% Length" = 50%. So this is how it works. Length here means words, and also means characters. That's because unlike English where one word has multiple characters, Chinese is one word equals one character. 
+1. Check, for all paragraphs, whether at least 71% of the paragraphs has length >= 47. If yes, it'll return the original passage. 
+2. If no, (70% or less **of original text** has length >= 47), it'll generate the speech text. 
+3. After generate the speech text, it'll check whether the speech text has at least 51% paragraphs length >= 47. **Note, this isn't compared with original text, but compared with the generated speech text.** if yes, it'll return the speech text. 
+4. If no, (50% or less **of speech text** has length >= 47), it'll generate and return the length text. 
+
+That's how it works. Some people will be confused thinking this is how it works. 
+1. If original text > 70% has more than 47 characters, return speech text. 
+2. Else if original text > 50% has more than 47 characters, return length text. 
+**Wrong! Absolutely wrong!** It isn't that simple. It has a more complicated logic. 
 
 ---
 # Learnings

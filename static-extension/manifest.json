@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "69xinshu removal",
+    "description": "Remove 69xinshu content statically",
+    "version": "1.0",
+    "permissions": ["scripting", "activeTab", "storage"],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [{
+        "matches": ["https://www.69xinshu.com/txt/*/*"],
+        "js": ["./content_scripts.js"]
+    }]
+}
