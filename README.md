@@ -58,7 +58,9 @@ Load unpacked
 
 ![Load unpacked](./readme_assets/image4.png)
 
-Then just choose the folder where you'd unzip your file just now, probably a folder named chinese-novel-word-reductor. **If your folder have another layer, that is, this file is inside, say, `chinese-novel-word-reductor/chinese-novel-word-reductor/README.md`, then you should open the inner `chinese-novel-word-reductor` folder instead of the outer one.** That's it! 
+Then just choose the folder where you'd unzip your file just now, probably a folder named chinese-novel-word-reductor. **If your folder have another layer, that is, this file is inside, say, `chinese-novel-word-reductor/chinese-novel-word-reductor/README.md`, then you should open the inner `chinese-novel-word-reductor` folder instead of the outer one.** 
+
+Then, choose, whether you want `dynamic-extension` or `static-extension`. Click the folder whichever you choose. Violà! 
 
 ## How To Use (Dynamic)
 When you visit a page like https://www.69xinshu.com/txt/54562/36854717, you can open the extension and click whether you want length only or length with speech. **Reload the page after updating your choice.** (If it doesn't work, check that it is ticked again. If it isn't, do it again, close the extension window, and reload again.) Now, you should see it work. 
