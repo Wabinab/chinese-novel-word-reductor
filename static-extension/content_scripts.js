@@ -27,7 +27,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     // Check if length >= brk_len percentage > p_spch, we'll retain none. 
     let type = "none";
     let temp_len = remnants.filter(x => x.length >= brk_len);
-    if (Math.round(temp_len.length / remnants.length) > percentage_spch) {
+    if (percentage(temp_len.length, remnants.length) > percentage_spch) {
         return;
     }
 
@@ -37,7 +37,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
         || (x.includes('“') && x.length >= brk_spch)
     );
     let spch_reach_len = spch_list.filter(x => x.length >= brk_len);
-    if (Math.round(spch_reach_len.length / spch_list.length) > percentage_len) {
+    if (percentage(spch_reach_len.length, spch_list.length) > percentage_len) {
         type = "speech";
     } else {
         type = "length";
@@ -46,7 +46,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     if (type != "none") {
         if (type == "speech") remnants = spch_list;
         if (type == "length") {
-            remnants = remnants.filter(x =>  x.length >= length 
+            remnants = remnants.filter(x =>  x.length >= brk_len 
                 || x.trim().startsWith("【")
             );
         }
@@ -70,3 +70,46 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
         document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
     }
 })
+
+
+// https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+}
+
+// https://stackoverflow.com/questions/20798477/how-to-find-the-indexes-of-all-occurrences-of-an-element-in-array
+function mergeAllClosers(remnants) {
+    var indices = remnants.reduce(function(a, e, i) {
+        if (e.trim().includes("】") && !e.trim().includes("【")) a.push(i);
+        return a;
+    }, []);
+
+    var start_indices = [];
+
+    for (var i=0; i < indices.length; i++) {
+        var found = false;
+        var tracking_index = indices[i];
+        while (!found) {
+            if (tracking_index < 0) { found = true; start_indices.push(-1); break; }
+            if (!remnants[tracking_index].includes("【")) { tracking_index -= 1; continue; }
+            start_indices.push(tracking_index);
+            break;
+        }
+    }
+
+    for (var i=0; i < start_indices.length; i++) {
+        if (start_indices[i] == -1) continue;
+        var group_this = remnants.slice(start_indices[i], indices[i]+1);
+        group_this = group_this.map(c => c.replaceAll('\n', '')).join('<br>');
+        remnants[start_indices[i]] = group_this;
+        for (var j=start_indices[i]+1; j <= indices[i]; j++) {
+            remnants[j] = "";
+        }
+    }
+
+    return remnants;
+}
+
+function percentage(numerator, denominator) {
+    return Math.round(numerator / denominator * 100);
+}
