@@ -16,5 +16,8 @@
   }, {
     "matches": ["https://www.ddxs.com/*/*.html"],
     "js": ["./content_scripts/ddxs_bg.js"]
+  }, {
+    "matches": ["https://www.lwxs.com/shu/*/*.html"],
+    "js": ["./content_scripts/lwxs_bg.js"]
   }]
 }
