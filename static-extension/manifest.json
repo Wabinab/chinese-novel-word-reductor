@@ -12,7 +12,7 @@
         "service_worker": "background.js"
     },
     "content_scripts": [{
-        "matches": ["https://www.69xinshu.com/txt/*/*"],
+        "matches": ["https://www.69xinshu.com/txt/*/*", "https://www.69shu.pro/txt/*/*"],
         "js": ["./content_scripts.js"]
     }]
 }

@@ -26,7 +26,7 @@ brkspch_btn.addEventListener('click', async (event) => {
         console.log("brkspch updated.");
         chrome.storage.local.set({ "brkspch": brkspch_val });
         brkspch_err.textContent = "";
-        brkspch_scs = "Saved.";
+        brkspch_scs.textContent = "Saved.";
         setTimeout(() => { brkspch_scs.textContent = ""; }, 1500);
     } else brkspch_err.textContent = "length must be between 0 and 150, inclusive.";
 });
@@ -43,7 +43,7 @@ p_spch_btn.addEventListener('click', async (event) => {
         console.log("p_spch updated.");
         chrome.storage.local.set({ "p_spch": p_spch_val });
         p_spch_err.textContent = "";
-        p_spch_scs = "Saved.";
+        p_spch_scs.textContent = "Saved.";
         setTimeout(() => { p_spch_scs.textContent = ""; }, 1500);
     } else if (p_spch_val == 0) {
         p_spch_err.textContent = "0% not allowed. Minimum 1%.";
@@ -62,7 +62,7 @@ p_len_btn.addEventListener('click', async (event) => {
         console.log("p_len updated.");
         chrome.storage.local.set({ "p_len": p_len_val });
         p_len_err.textContent = "";
-        p_len_scs = "Saved.";
+        p_len_scs.textContent = "Saved.";
         setTimeout(() => { p_len_scs.textContent = ""; }, 1500);
     } else if (p_len_val == 0) {
         p_len_err.textContent = "0% not allowed. Minimum 1%.";

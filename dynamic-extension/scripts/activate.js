@@ -58,7 +58,7 @@ async function register_script(url, key) {
         return;
     }
 
-    const start_url = `https://www.${datakeys[site_key]}.com/txt/`;
+    const start_url = `https://${datakeys[site_key]}/txt/`;
     if (!url.includes(start_url)) {
         console.log(`Not ${site_key}.`, url);
         return;
@@ -131,7 +131,7 @@ function url_to_code(href) {
 
 // Use code to url to reverse this. 
 function code_to_url(code, site_key) {
-    return `https://www.${site_key}.com/txt/${code}/*`;
+    return `https://${site_key}/txt/${code}/*`;
 }
 
 
@@ -141,14 +141,14 @@ function onInstalled() {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: ["https://www.69xinshu.com/txt/0/*"],
-        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+        matches: ["https://www.69shu.pro/txt/0/*"],
+        excludeMatches: ["https://www.69shu.pro/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: ["https://www.69xinshu.com/txt/0/*"],
-        excludeMatches: ["https://www.69xinshu.com/txt/*/end.html"]
+        matches: ["https://www.69shu.pro/txt/0/*"],
+        excludeMatches: ["https://www.69shu.pro/txt/*/end.html"]
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
         chrome.storage.local.set({ "length": [], "len_speech": [] });
@@ -168,13 +168,13 @@ async function recreate(datakeys) {
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys["length"].map(u => code_to_url(u, datakeys[site_key])),
-        excludeMatches: [`https://www.${datakeys[site_key]}.com/txt/*/end.html`]
+        excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys["len_speech"].map(u => code_to_url(u, datakeys[site_key])),
-        excludeMatches: [`https://www.${datakeys[site_key]}.com/txt/*/end.html`]
+        excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
     }]).then(() => {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.
