@@ -20,5 +20,8 @@
   }, {
     "matches": ["https://www.lwxs.com/shu/*/*.html", "https://www.lwxiaoshuo.org/shu/*/*.html"],
     "js": ["./content_scripts/lwxs_bg.js"]
+  }, {
+    "matches": ["https://www.ksw56.com/book/*/*.html", "https://www.rx96.com/shu/*/*.html"],
+    "js": ["./content_scripts/rx96_bg.js"]
   }]
 }

@@ -4,6 +4,7 @@
     "description": "Remove 69xinshu content statically",
     "version": "1.0",
     "permissions": ["scripting", "activeTab", "storage"],
+    "host_permissions": ["https://*/*"],
     "action": {
         "default_popup": "popup.html"
     },
