@@ -1,6 +1,6 @@
 setTimeout(() => {
   main();
-}, 250);
+}, 100);
 
 function main() {
   document.body.style.background = "#f2f3f4";

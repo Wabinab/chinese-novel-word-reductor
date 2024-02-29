@@ -1,17 +1,17 @@
-const len_key = 'length';
-const speech_key = 'len_speech';
-const brklen_key = 'breaklength';
-const brkspeech_key = 'breakspeech';
-const site_key = 'sitename';
-const length = document.getElementById(len_key);
-const len_speech = document.getElementById(speech_key);
-const brklen_field = document.getElementById(brklen_key);
-const brkspeech_field = document.getElementById(brkspeech_key);
-const site_field = document.getElementById(site_key);
+let len_key = 'length';
+let speech_key = 'len_speech';
+let brklen_key = 'breaklength';
+let brkspeech_key = 'breakspeech';
+let site_key = 'sitename';
+let length = document.getElementById(len_key);
+let len_speech = document.getElementById(speech_key);
+let brklen_field = document.getElementById(brklen_key);
+let brkspeech_field = document.getElementById(brkspeech_key);
+let site_field = document.getElementById(site_key);
 
 // Persist options will be done in script.js
 
-const data = await chrome.storage.local.get([
+let data = await chrome.storage.local.get([
     len_key, speech_key, brklen_key, brkspeech_key,
     site_key
 ]);
