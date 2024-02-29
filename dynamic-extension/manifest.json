@@ -23,5 +23,8 @@
   }, {
     "matches": ["https://www.ksw56.com/book/*/*.html", "https://www.rx96.com/shu/*/*.html"],
     "js": ["./content_scripts/rx96_bg.js"]
+  }, {
+    "matches": ["http://www.xsbiquge.la/book/*/*.html"],
+    "js": ["./content_scripts/xsbiquge_bg.js"]
   }]
 }
