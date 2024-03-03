@@ -10,4 +10,4 @@ let datakeys = await chrome.storage.local.get([
 brklen_field.value = datakeys[brklen_key];
 brkspch_field.value = datakeys[brkspch_key];
 p_spch_field.value = datakeys[p_spch_key];
-p_len_field = datakeys[p_len_key];
+p_len_field.value = datakeys[p_len_key];
