@@ -26,5 +26,8 @@
   }, {
     "matches": ["http://www.xsbiquge.la/book/*/*.html"],
     "js": ["./content_scripts/xsbiquge_bg.js"]
+  }, {
+    "matches": ["https://www.piaotia.com/html/*/*/*.html"],
+    "js": ["./content_scripts/piaotia_bg.js"]
   }]
 }
