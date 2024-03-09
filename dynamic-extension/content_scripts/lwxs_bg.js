@@ -25,7 +25,7 @@ setTimeout(() => {
       }
   }
   document.onkeydown = checkKey;
-}, 500);
+}, 100);
 
 
 function getElementsByText(str, tag = 'a') {
