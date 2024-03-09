@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "69xinshu removal",
   "description": "Remove 69xinshu content dynamically",
-  "version": "1.75",
+  "version": "1.8",
   "background": {
     "service_worker": "background.js"
   },
