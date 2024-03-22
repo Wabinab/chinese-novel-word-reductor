@@ -26,6 +26,7 @@ chrome.storage.local.get(['breaklength', 'breakspeech']).then((result) => {
     mergeAllClosers(remnants);
     remnants = remnants.filter(x =>  x.length >= length
         || x.trim().startsWith("【")
+        || x.includes("：")
         || (x.includes('“') && x.length >= speech)
     );
     remnants = remnants.filter(onlyUnique);

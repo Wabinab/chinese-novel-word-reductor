@@ -13,6 +13,7 @@ function main() {
   const data = txt.innerText.split('\n\n\n');
   let spch_list = data.filter(x =>  x.length >= 40
       || x.trim().startsWith("【")
+      || x.includes("：")
       || (x.includes('“') && x.length >= 20)
   );
   spch_list = spch_list.map(c => `  ${c.trim()}`)
