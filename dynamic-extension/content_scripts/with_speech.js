@@ -10,9 +10,13 @@ var remnants = paragraphs.slice(1, paragraphs.length - 1);
 remnants = remnants.map(c => c.split('\n').flat()).flat();
 remnants = remnants.filter(c => c != '');  // not empty
 
+var g = mainhtml.split("</h1>");
+var h1 = g[0] + '</h1>';
+mainhtml = g[1];
 var first_line = mainhtml.split(paragraphs[1].trim())[0];
 if (first_line.length > 2000) first_line = mainhtml.split(remnants[1].trim())[0];
 if (first_line.length > 2000) first_line = mainhtml.split('\n<br><br>\n')[0] + '\n<br><br>\n';
+first_line = first_line.split("如果您使用第三方小说APP或各种浏览器插件打开此网站可能导致内容显示乱序,请稍后尝试使用主流浏览器访问此网站，感谢您的支持!")[0];
 var last_remnant = remnants[remnants.length-1];
 var last_line = mainhtml.split(last_remnant.trim()).pop().replaceAll('\n<br>\n', '');
 
@@ -26,7 +30,7 @@ chrome.storage.local.get(['breaklength', 'breakspeech']).then((result) => {
     mergeAllClosers(remnants);
     remnants = remnants.filter(x =>  x.length >= length
         || x.trim().startsWith("【")
-        || x.includes("：")
+        || (x.includes("：") && x.length <= 15 && !x.includes("“"))
         || (x.includes('“') && x.length >= speech)
     );
     remnants = remnants.filter(onlyUnique);
@@ -46,7 +50,7 @@ chrome.storage.local.get(['breaklength', 'breakspeech']).then((result) => {
     }
 
     // Join back
-    var final_html = `${first_line.trimEnd()}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
+    var final_html = `${h1}${first_line.trimEnd()}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
 
     document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
 });

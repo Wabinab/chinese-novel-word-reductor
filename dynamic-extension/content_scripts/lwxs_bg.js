@@ -7,7 +7,7 @@ setTimeout(() => {
   const text = content.innerText.split('\n\n');
   const spch_list = text.filter(x =>  x.trim().length >= 40
       || x.trim().startsWith("【")
-      || x.includes("：")
+      || (x.includes("：") && x.length <= 15 && !x.includes("“"))
       || (x.includes('“') && x.trim().length >= 10)
   );
   const scph_list2 = spch_list.map(c => '<p>' + c.trimStart('\n'));

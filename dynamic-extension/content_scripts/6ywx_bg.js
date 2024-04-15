@@ -12,7 +12,7 @@ function main() {
   const text = content.innerText.split('\n\n');
   const spch_list = text.filter(x =>  x.trim().length >= 40
       || x.trim().startsWith("【")
-      || x.includes("：")
+      || (x.includes("：") && x.length <= 15 && !x.includes("“"))
       || (x.includes('“') && x.trim().length >= 10)
   );
   content.innerText = spch_list.join('\n\n') + '\n\n';
