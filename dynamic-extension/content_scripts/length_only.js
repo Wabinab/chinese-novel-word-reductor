@@ -26,6 +26,7 @@ chrome.storage.local.get('breaklength').then((length) => {
     mergeAllClosers(remnants);
     remnants = remnants.filter(x =>  x.length >= length 
         || x.trim().startsWith("【")
+        || x.trim().startsWith("「")
         || (x.includes("：") && x.length <= 15 && !x.includes("“"))
     );
     remnants = remnants.filter(onlyUnique);
