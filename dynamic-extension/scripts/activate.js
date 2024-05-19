@@ -1,6 +1,6 @@
 const len_key = 'length';
 const speech_key = 'len_speech';
-const site_key = 'sitename';
+// const site_key = 'sitename';
 const length = document.getElementById(len_key);
 const len_speech = document.getElementById(speech_key);
 
@@ -17,6 +17,7 @@ function on_len_change(checked) {
     // var checked = length.checked;
     chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
         let url = filtered_url(tabs[0].url);
+        // console.warn(url);
         if (checked) { await register_script(url, len_key); }
         else { await unregister_script(url, len_key); }
     });
@@ -44,7 +45,7 @@ function on_lenspeech_change(checked) {
 // ======================================================================
 async function register_script(url, key) {
     var scripts = await chrome.scripting.getRegisteredContentScripts()
-    let datakeys = await chrome.storage.local.get([len_key, speech_key, site_key]);
+    let datakeys = await chrome.storage.local.get([len_key, speech_key]);
     if (scripts.length == 0) { 
         if (datakeys[len_key].length == 0 && datakeys[speech_key].length == 0) {
             onInstalled(); 
@@ -58,11 +59,11 @@ async function register_script(url, key) {
         return;
     }
 
-    const start_url = `https://${datakeys[site_key]}/txt/`;
-    if (!url.includes(start_url)) {
-        console.log(`Not ${site_key}.`, url);
-        return;
-    }
+    // const start_url = `https://${datakeys[site_key]}/txt/`;
+    // if (!url.includes(start_url)) {
+    //     console.log(`Not ${site_key}.`, url);
+    //     return;
+    // }
 
     // let data = await chrome.storage.local.get(key);
     let code = url_to_code(url);
@@ -78,7 +79,14 @@ async function register_script(url, key) {
 
     chrome.scripting.updateContentScripts([{
         id: key,
-        matches: data.map(u => code_to_url(u, datakeys[site_key]))
+        matches: data.map(u => code_to_url(u)),
+        // matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
     }])
     .then(() => {
         console.log("Added website to", key);
@@ -88,9 +96,10 @@ async function register_script(url, key) {
 }
 
 async function unregister_script(url, key) {
-    let datakeys = await chrome.storage.local.get([key, site_key]);
+    let datakeys = await chrome.storage.local.get([key]);
     let data = datakeys[key];
     let code = url_to_code(url);
+    // console.warn(code);
     const idx = data.indexOf(code);
     if (idx == -1) {
         console.log("cannot find index of this url from db.");
@@ -106,7 +115,15 @@ async function unregister_script(url, key) {
 
     chrome.scripting.updateContentScripts([{
         id: key, 
-        matches: data.map(u => code_to_url(u, datakeys[site_key]))
+        matches: data.map(u => code_to_url(u)),
+        // matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
+        // matches: data.map(u => code_to_url(u, datakeys[site_key]))
     }])
     .then(() => {
         console.log("Removed website from", key);
@@ -130,8 +147,9 @@ function url_to_code(href) {
 }
 
 // Use code to url to reverse this. 
-function code_to_url(code, site_key) {
-    return `https://${site_key}/txt/${code}/*`;
+function code_to_url(code) {
+    // return `https://${site_key}/txt/${code}/*`;
+    return `https://*/txt/${code}/*`
 }
 
 
@@ -141,14 +159,28 @@ function onInstalled() {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: ["https://www.69shu.pro/txt/0/*"],
-        excludeMatches: ["https://www.69shu.pro/txt/*/end.html"]
+        // matches: ["https://www.69shu.top/txt/0/*"],
+        // excludeMatches: ["https://www.69shu.top/txt/*/end.html"]
+        matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: ["https://www.69shu.pro/txt/0/*"],
-        excludeMatches: ["https://www.69shu.pro/txt/*/end.html"]
+        // matches: ["https://www.69shu.top/txt/0/*"],
+        // excludeMatches: ["https://www.69shu.top/txt/*/end.html"]
+        matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
         chrome.storage.local.set({ "length": [], "len_speech": [] });
@@ -167,14 +199,28 @@ async function recreate(datakeys) {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: datakeys["length"].map(u => code_to_url(u, datakeys[site_key])),
-        excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
+        matches: datakeys["length"].map(u => code_to_url(u)),
+        // excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
+        // matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: datakeys["len_speech"].map(u => code_to_url(u, datakeys[site_key])),
-        excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
+        matches: datakeys["len_speech"].map(u => code_to_url(u)),
+        // excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
+        // matches: [ "https://*/txt/0/*" ],
+        // include_globs: [
+        //   "*.69shu.*/*", 
+        //   "*.69shuba.*/*",
+        //   "*.69xinshu.*/*"
+        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
     }]).then(() => {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.

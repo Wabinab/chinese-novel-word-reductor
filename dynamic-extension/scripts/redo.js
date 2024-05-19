@@ -4,7 +4,7 @@ let filename = '';
 let redo_btn = document.getElementById('redo_again');
 let reset_btn = document.getElementById('reset');
 
-let datakeys = await chrome.storage.local.get([len_key, speech_key, site_key]);
+let datakeys = await chrome.storage.local.get([len_key, speech_key]);
 chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     let url = url_to_code(tabs[0].url);
     let tabId = tabs[0].id
