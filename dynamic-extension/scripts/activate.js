@@ -80,12 +80,6 @@ async function register_script(url, key) {
     chrome.scripting.updateContentScripts([{
         id: key,
         matches: data.map(u => code_to_url(u)),
-        // matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
     }])
     .then(() => {
@@ -93,6 +87,18 @@ async function register_script(url, key) {
         chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during registration.", err));
+
+    let key2 = key == len_key ? speech_key : len_key;
+    let all_others = data.concat(datakeys[key2]).map(u => code_to_url(u));
+    all_others.push("https://*/txt/*/end.html");
+    chrome.scripting.updateContentScripts([{
+        id: "do_nothing",
+        matches: ["https://*/txt/*/*"],
+        excludeMatches: all_others
+    }])
+    .then(() => {
+        console.log("Do nothing updated.");
+    }).catch((err) => console.warn("unexpected error during updating do nothing.", err));
 }
 
 async function unregister_script(url, key) {
@@ -116,20 +122,25 @@ async function unregister_script(url, key) {
     chrome.scripting.updateContentScripts([{
         id: key, 
         matches: data.map(u => code_to_url(u)),
-        // matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
-        // matches: data.map(u => code_to_url(u, datakeys[site_key]))
     }])
     .then(() => {
         console.log("Removed website from", key);
         chrome.storage.local.set(dict);
     })
     .catch((err) => console.warn("unexpected error during unregistration.", err));
+
+    let key2 = key == len_key ? speech_key : len_key;
+    let all_others = data.concat(datakeys[key2]).map(u => code_to_url(u));
+    all_others.push("https://*/txt/*/end.html");
+    chrome.scripting.updateContentScripts([{
+        id: "do_nothing",
+        matches: ["https://*/txt/*/*"],
+        excludeMatches: all_others
+    }])
+    .then(() => {
+        console.log("Do nothing updated.");
+    }).catch((err) => console.warn("unexpected error during updating do nothing.", err));
 }
 
 // ====================================================
@@ -159,27 +170,19 @@ function onInstalled() {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        // matches: ["https://www.69shu.top/txt/0/*"],
-        // excludeMatches: ["https://www.69shu.top/txt/*/end.html"]
         matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        // matches: ["https://www.69shu.top/txt/0/*"],
-        // excludeMatches: ["https://www.69shu.top/txt/*/end.html"]
         matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
+        excludeMatches: ["https://*/txt/*/end.html"]
+    }, {
+        id: "do_nothing",
+        js: ["./content_scripts/do_nothing.js"],
+        persistAcrossSessions: true,
+        matches: ["https://*/txt/*/*"],
         excludeMatches: ["https://*/txt/*/end.html"]
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
@@ -200,27 +203,19 @@ async function recreate(datakeys) {
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys["length"].map(u => code_to_url(u)),
-        // excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
-        // matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys["len_speech"].map(u => code_to_url(u)),
-        // excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
-        // matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
+    }, {
+        id: "do_nothing",
+        js: ["./content_scripts/do_nothing.js"],
+        persistAcrossSessions: true,
+        matches: ["https://*/txt/*/*"],
+        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url).concat(["https://*/txt/*/end.html"])
     }]).then(() => {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.

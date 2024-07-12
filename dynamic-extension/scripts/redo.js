@@ -9,7 +9,8 @@ chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
     let url = url_to_code(tabs[0].url);
     let tabId = tabs[0].id
     if (datakeys[len_key].includes(url)) filename = "./content_scripts/length_only.js";
-    else if (datakeys[speech_key].includes(url)) filename = "./content_scripts/with_speech.js";
+    else if (datakeys[speech_key].includes(url)) filename = "./content_scripts/with_speech.js"
+    else filename = "./content_scripts/do_nothing.js";
 
     redo_btn.addEventListener('click', async (event) => {
         if (filename != '') {

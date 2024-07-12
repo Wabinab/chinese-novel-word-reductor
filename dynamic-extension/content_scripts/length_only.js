@@ -2,7 +2,8 @@ var hosts = ["69shu", "69shuba", "69xinshu"]
 if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
   var maintext = document.getElementsByClassName("txtnav")[0].innerText;
   var mainhtml = document.getElementsByClassName("txtnav")[0].innerHTML;
-  
+	document.getElementsByClassName("txtnav")[0].style.lineHeight = '2em'
+
   // Split by \n\n (double)
   var paragraphs = maintext.split("\n\n");
   
@@ -19,7 +20,11 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
   if (first_line.length > 2000) first_line = mainhtml.split('\n<br><br>\n')[0] + '\n<br><br>\n';
   first_line = first_line.split("如果您使用第三方小说APP或各种浏览器插件打开此网站可能导致内容显示乱序,请稍后尝试使用主流浏览器访问此网站，感谢您的支持!")[0];
   var last_remnant = remnants[remnants.length-1];
-  var last_line = mainhtml.split(last_remnant.trim()).pop().replaceAll('\n<br>\n', '');
+  var last_line = mainhtml.split(last_remnant.trim()).pop()
+    .split('<br>').filter(e => e.trim() != '').join('<br><br>')
+		.replaceAll('</p>', '<br>');
+	//   .replaceAll('\n<br>\n', '');
+	first_line = first_line.replaceAll('<p>', '<br><br>&emsp;&emsp;');
   
   // Filter now
   chrome.storage.local.get('breaklength').then((length) => {
@@ -48,7 +53,7 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
       }
   
       // Join back
-      var final_html = `${h1}${first_line.trimEnd()}${remnants.join('\n<br><br>\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
+      var final_html = `${h1}${first_line.trimEnd()}${remnants.join('\n<br><br>&emsp;&emsp;\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
   
       document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
   });

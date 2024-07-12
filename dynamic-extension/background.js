@@ -3,43 +3,27 @@ chrome.runtime.onInstalled.addListener(() => {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        // matches: ["https://www.69shu.top/txt/*/*"],
         matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: [ "https://*/txt/0/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
+    }, {
+        id: "do_nothing",
+        js: ["./content_scripts/do_nothing.js"],
+        persistAcrossSessions: true,
+        matches: ["https://*/txt/*/*"],
+        excludeMatches: ["https://*/txt/0/*", "https://*/txt/*/end.html"]  // currently, nothing is excluded. 
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
         chrome.storage.local.set({ "length": [], "len_speech" : [] });
     }).catch((err) => console.warn("unexpected err during registration.", err));
 
-    // chrome.scripting.registerContentScripts([{
-    //     id: "len_speech",
-    //     js: ["./content_scripts/with_speech.js"],
-    //     persistAcrossSessions: true,
-    //     matches: ["https://www.69shu.top/txt/*/*"],
-    //     excludeMatches: ["https://www.69shu.top/txt/*/end.html"]
-    // }]).then(() => { 
-    //     console.log("oninstalled run len_speech (previously not run).");
-    //     chrome.storage.local.set({ "len_speech" : [] });
-    // }).catch((err) => console.warn("unexpected error during registration len_speech.", err));
-
     // set breaklength default to 47.
-    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0, "sitename": "www.69shu.top" });
+    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0 });
 });
 
 const len_key = 'length';
@@ -64,27 +48,19 @@ function recreate(datakeys) {
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys[len_key].map(u => code_to_url(u)),
-        // matches: [ "https://*/txt/*/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
     }, {
         id: speech_key,
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys[speech_key].map(u => code_to_url(u)),
-        // matches: [ "https://*/txt/*/*" ],
-        // include_globs: [
-        //   "*.69shu.*/*", 
-        //   "*.69shuba.*/*",
-        //   "*.69xinshu.*/*"
-        // ],
         excludeMatches: ["https://*/txt/*/end.html"]
-        // matches: datakeys[speech_key].map(u => code_to_url(u, datakeys[site_key])),
-        // excludeMatches: [`https://${datakeys[site_key]}/txt/*/end.html`]
+    }, {
+        id: "do_nothing",
+        js: ["./content_scripts/do_nothing.js"],
+        persistAcrossSessions: true,
+        matches: ["https://*/txt/*/*"],
+        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url).concat(["https://*/txt/*/end.html"])
     }]).then(() => {
         console.log("recreated content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.
