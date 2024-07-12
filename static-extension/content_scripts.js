@@ -37,6 +37,9 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     let type = "none";
     let temp_len = remnants.filter(x => x.length >= brk_len);
     if (percentage(temp_len.length, remnants.length) > percentage_spch) {
+        mainhtml = mainhtml.replaceAll('</p>\n', '</p>\n<br>')
+        document.getElementsByClassName("txtnav")[0].innerHTML = mainhtml;
+        document.getElementsByClassName("txtnav")[0].style.lineHeight = '2em'
         return;
     }
 
