@@ -60,7 +60,7 @@ function recreate(datakeys) {
         js: ["./content_scripts/do_nothing.js"],
         persistAcrossSessions: true,
         matches: ["https://*/txt/*/*"],
-        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url).concat(["https://*/txt/*/end.html"])
+        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url(u)).concat(["https://*/txt/*/end.html"])
     }]).then(() => {
         console.log("recreated content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.
