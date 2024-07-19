@@ -47,6 +47,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     let spch_list = remnants.filter(x =>  x.length >= brk_len
         || x.trim().startsWith("【")
         || x.trim().startsWith("「")
+        || (x.includes("：") && !x.includes("“") && check_right(x))
         || (x.includes('“') && x.length >= brk_spch)
     );
     let spch_reach_len = spch_list.filter(x => x.length >= brk_len);
@@ -125,4 +126,11 @@ function mergeAllClosers(remnants) {
 
 function percentage(numerator, denominator) {
     return Math.round(numerator / denominator * 100);
+}
+
+function check_right(item) {
+    var new_item = item.split("：");
+    if (new_item.length === 1) return false;
+    if (new_item.pop().length === 0) return false;
+    return true;
 }

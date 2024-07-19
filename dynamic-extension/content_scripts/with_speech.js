@@ -38,7 +38,7 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
       remnants = remnants.filter(x =>  x.length >= length
           || x.trim().startsWith("【")
           || x.trim().startsWith("「")
-          || (x.includes("：") && x.length <= 15 && !x.includes("“"))
+          || (x.includes("：") && !x.includes("“") && check_right(x))
           || (x.includes('“') && x.length >= speech)
       );
       remnants = remnants.filter(onlyUnique);
@@ -102,4 +102,13 @@ function mergeAllClosers(remnants) {
     }
 
     return remnants;
+}
+
+// Returns bool. Check whether there are anything on the RHS of : (colon). 
+// If something, returns true, else returns false. 
+function check_right(item) {
+    var new_item = item.split("：");
+    if (new_item.length === 1) return false;
+    if (new_item.pop().length === 0) return false;
+    return true;
 }
