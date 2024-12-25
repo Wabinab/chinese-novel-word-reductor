@@ -3,27 +3,27 @@ chrome.runtime.onInstalled.addListener(() => {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: [ "https://*/txt/0/*" ],
-        excludeMatches: ["https://*/txt/*/end.html"]
+        matches: [ "https://*/*/0/*" ],
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: [ "https://*/txt/0/*" ],
-        excludeMatches: ["https://*/txt/*/end.html"]
+        matches: [ "https://*/*/0/*" ],
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "do_nothing",
         js: ["./content_scripts/do_nothing.js"],
         persistAcrossSessions: true,
-        matches: ["https://*/txt/*/*"],
-        excludeMatches: ["https://*/txt/0/*", "https://*/txt/*/end.html"]  // currently, nothing is excluded. 
+        matches: ["https://*/*/*/*"],
+        excludeMatches: ["https://*/*/0/*", "https://*/*/*/end.html"]  // currently, nothing is excluded. 
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
         chrome.storage.local.set({ "length": [], "len_speech" : [] });
     }).catch((err) => console.warn("unexpected err during registration.", err));
 
-    // set breaklength default to 47.
-    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0 });
+    // set breaklength default to 45.
+    chrome.storage.local.set({ "breaklength": 45, "breakspeech": 0 });
 });
 
 const len_key = 'length';
@@ -48,19 +48,19 @@ function recreate(datakeys) {
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys[len_key].map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: speech_key,
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys[speech_key].map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "do_nothing",
         js: ["./content_scripts/do_nothing.js"],
         persistAcrossSessions: true,
-        matches: ["https://*/txt/*/*"],
-        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url(u)).concat(["https://*/txt/*/end.html"])
+        matches: ["https://*/*/*/*"],
+        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url(u)).concat(["https://*/*/*/end.html"])
     }]).then(() => {
         console.log("recreated content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.
@@ -68,5 +68,5 @@ function recreate(datakeys) {
 }
 
 function code_to_url(code) {
-    return `https://*/txt/${code}/*`;
+    return `https://*/*/${code}/*`;
 }

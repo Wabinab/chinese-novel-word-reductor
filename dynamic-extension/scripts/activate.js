@@ -59,7 +59,7 @@ async function register_script(url, key) {
         return;
     }
 
-    // const start_url = `https://${datakeys[site_key]}/txt/`;
+    // const start_url = `https://${datakeys[site_key]}/*/`;
     // if (!url.includes(start_url)) {
     //     console.log(`Not ${site_key}.`, url);
     //     return;
@@ -80,7 +80,7 @@ async function register_script(url, key) {
     chrome.scripting.updateContentScripts([{
         id: key,
         matches: data.map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }])
     .then(() => {
         console.log("Added website to", key);
@@ -90,10 +90,10 @@ async function register_script(url, key) {
 
     let key2 = key == len_key ? speech_key : len_key;
     let all_others = data.concat(datakeys[key2]).map(u => code_to_url(u));
-    all_others.push("https://*/txt/*/end.html");
+    all_others.push("https://*/*/*/end.html");
     chrome.scripting.updateContentScripts([{
         id: "do_nothing",
-        matches: ["https://*/txt/*/*"],
+        matches: ["https://*/*/*/*"],
         excludeMatches: all_others
     }])
     .then(() => {
@@ -122,7 +122,7 @@ async function unregister_script(url, key) {
     chrome.scripting.updateContentScripts([{
         id: key, 
         matches: data.map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }])
     .then(() => {
         console.log("Removed website from", key);
@@ -132,10 +132,10 @@ async function unregister_script(url, key) {
 
     let key2 = key == len_key ? speech_key : len_key;
     let all_others = data.concat(datakeys[key2]).map(u => code_to_url(u));
-    all_others.push("https://*/txt/*/end.html");
+    all_others.push("https://*/*/*/end.html");
     chrome.scripting.updateContentScripts([{
         id: "do_nothing",
-        matches: ["https://*/txt/*/*"],
+        matches: ["https://*/*/*/*"],
         excludeMatches: all_others
     }])
     .then(() => {
@@ -159,8 +159,8 @@ function url_to_code(href) {
 
 // Use code to url to reverse this. 
 function code_to_url(code) {
-    // return `https://${site_key}/txt/${code}/*`;
-    return `https://*/txt/${code}/*`
+    // return `https://${site_key}/*/${code}/*`;
+    return `https://*/*/${code}/*`
 }
 
 
@@ -170,27 +170,27 @@ function onInstalled() {
         id: "length",
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
-        matches: [ "https://*/txt/0/*" ],
-        excludeMatches: ["https://*/txt/*/end.html"]
+        matches: [ "https://*/*/0/*" ],
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
-        matches: [ "https://*/txt/0/*" ],
-        excludeMatches: ["https://*/txt/*/end.html"]
+        matches: [ "https://*/*/0/*" ],
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "do_nothing",
         js: ["./content_scripts/do_nothing.js"],
         persistAcrossSessions: true,
-        matches: ["https://*/txt/*/*"],
-        excludeMatches: ["https://*/txt/*/end.html"]
+        matches: ["https://*/*/*/*"],
+        excludeMatches: ["https://*/*/*/end.html"]
     }]).then(() => {
         console.log("oninstalled run (previously not run).");
         chrome.storage.local.set({ "length": [], "len_speech": [] });
     }).catch((err) => console.warn("unexpected err during registration.", err));
 
-    // set breaklength default to 47.
-    chrome.storage.local.set({ "breaklength": 47, "breakspeech": 0, "sitename": "69xinshu" });
+    // set breaklength default to 45.
+    chrome.storage.local.set({ "breaklength": 45, "breakspeech": 0, "sitename": "69xinshu" });
 }
 
 
@@ -203,19 +203,19 @@ async function recreate(datakeys) {
         js: ["./content_scripts/length_only.js"],
         persistAcrossSessions: true,
         matches: datakeys["length"].map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "len_speech",
         js: ["./content_scripts/with_speech.js"],
         persistAcrossSessions: true,
         matches: datakeys["len_speech"].map(u => code_to_url(u)),
-        excludeMatches: ["https://*/txt/*/end.html"]
+        excludeMatches: ["https://*/*/*/end.html"]
     }, {
         id: "do_nothing",
         js: ["./content_scripts/do_nothing.js"],
         persistAcrossSessions: true,
-        matches: ["https://*/txt/*/*"],
-        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url(u)).concat(["https://*/txt/*/end.html"])
+        matches: ["https://*/*/*/*"],
+        excludeMatches: datakeys["length"].concat(datakeys["len_speech"]).map(u => code_to_url(u)).concat(["https://*/*/*/end.html"])
     }]).then(() => {
         console.log("recreate content scripts.");
         // chrome.storage is still saved, otherwise we can't create matches.

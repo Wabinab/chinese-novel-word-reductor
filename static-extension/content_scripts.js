@@ -32,6 +32,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
 
     remnants = remnants.map(c => c.trimEnd());
     mergeAllClosers(remnants);
+    mergeAllClosers(remnants, "“", "”", "");
 
     // Check if length >= brk_len percentage > p_spch, we'll retain none. 
     let type = "none";
@@ -92,9 +93,9 @@ function onlyUnique(value, index, array) {
 }
 
 // https://stackoverflow.com/questions/20798477/how-to-find-the-indexes-of-all-occurrences-of-an-element-in-array
-function mergeAllClosers(remnants) {
+function mergeAllClosers(remnants, opening="【", closing="】", join_with="<br>") {
     var indices = remnants.reduce(function(a, e, i) {
-        if (e.trim().includes("】") && !e.trim().includes("【")) a.push(i);
+        if (e.trim().includes(closing) && !e.trim().includes(opening)) a.push(i);
         return a;
     }, []);
 
@@ -105,7 +106,7 @@ function mergeAllClosers(remnants) {
         var tracking_index = indices[i];
         while (!found) {
             if (tracking_index < 0) { found = true; start_indices.push(-1); break; }
-            if (!remnants[tracking_index].includes("【")) { tracking_index -= 1; continue; }
+            if (!remnants[tracking_index].includes(opening)) { tracking_index -= 1; continue; }
             start_indices.push(tracking_index);
             break;
         }
@@ -114,7 +115,11 @@ function mergeAllClosers(remnants) {
     for (var i=0; i < start_indices.length; i++) {
         if (start_indices[i] == -1) continue;
         var group_this = remnants.slice(start_indices[i], indices[i]+1);
-        group_this = group_this.map(c => c.replaceAll('\n', '')).join('<br>');
+        group_this = group_this.map(c => {
+            c = c.replaceAll('\n', '')
+            if (trim) c = c.trim();
+            return c;
+        }).join(join_with);
         remnants[start_indices[i]] = group_this;
         for (var j=start_indices[i]+1; j <= indices[i]; j++) {
             remnants[j] = "";
