@@ -32,7 +32,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
 
     remnants = remnants.map(c => c.trimEnd());
     mergeAllClosers(remnants);
-    mergeAllClosers(remnants, "“", "”", "");
+    mergeAllClosers(remnants, "“", "”", "", true);
 
     // Check if length >= brk_len percentage > p_spch, we'll retain none. 
     let type = "none";
@@ -93,7 +93,7 @@ function onlyUnique(value, index, array) {
 }
 
 // https://stackoverflow.com/questions/20798477/how-to-find-the-indexes-of-all-occurrences-of-an-element-in-array
-function mergeAllClosers(remnants, opening="【", closing="】", join_with="<br>") {
+function mergeAllClosers(remnants, opening="【", closing="】", join_with="<br>", trim=false) {
     var indices = remnants.reduce(function(a, e, i) {
         if (e.trim().includes(closing) && !e.trim().includes(opening)) a.push(i);
         return a;
