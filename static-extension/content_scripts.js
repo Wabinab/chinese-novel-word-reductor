@@ -1,6 +1,12 @@
-var maintext = document.getElementsByClassName("txtnav")[0].innerText;
-var mainhtml = document.getElementsByClassName("txtnav")[0].innerHTML;
-document.getElementsByClassName("txtnav")[0].style.lineHeight = '2em'
+let cls_name = "txtnav"
+try {
+    var maintext = document.getElementsByClassName(cls_name)[0].innerText;
+} catch {
+    cls_name = "txtbox";
+    var maintext = document.getElementsByClassName(cls_name)[0].innerText;
+}
+var mainhtml = document.getElementsByClassName(cls_name)[0].innerHTML;
+document.getElementsByClassName(cls_name)[0].style.lineHeight = '2em'
 
 var paragraphs = maintext.split("\n\n");
 
@@ -30,7 +36,9 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     let percentage_len = result['p_len'];
     let percentage_spch = result['p_spch'];
 
-    remnants = remnants.map(c => c.trimEnd());
+    remnants = remnants.map(c => c.trimEnd())
+            .filter(x => !x.includes("无错版本"))
+            .filter(x => !x.includes("最新章节"));
     mergeAllClosers(remnants);
     mergeAllClosers(remnants, "“", "”", "", true);
 
@@ -39,8 +47,8 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     let temp_len = remnants.filter(x => x.length >= brk_len);
     if (percentage(temp_len.length, remnants.length) > percentage_spch) {
         // mainhtml = mainhtml.replaceAll('</p>\n', '</p>\n<br>')
-        // document.getElementsByClassName("txtnav")[0].innerHTML = mainhtml;
-        document.getElementsByClassName("txtnav")[0].style.lineHeight = '2em'
+        // document.getElementsByClassName(cls_name)[0].innerHTML = mainhtml;
+        document.getElementsByClassName(cls_name)[0].style.lineHeight = '2em'
         return;
     }
 
@@ -82,7 +90,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
         // Join back
         var final_html = `${h1}${first_line.trimEnd()}${remnants.join('\n<br><br>&emsp;&emsp;\n')}\n<br>\n${last_remnant}\n<br>\n${last_line}`;
     
-        document.getElementsByClassName("txtnav")[0].innerHTML = final_html;
+        document.getElementsByClassName(cls_name)[0].innerHTML = final_html;
     }
 })
 

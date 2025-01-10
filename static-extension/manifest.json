@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "69xinshu removal static",
     "description": "Remove 69xinshu content statically",
-    "version": "2.5",
+    "version": "2.6",
     "permissions": ["scripting", "activeTab", "storage"],
     "host_permissions": ["https://*/*"],
     "action": {
@@ -17,7 +17,8 @@
           "*69shu.*/*", 
           "*69shuba.*/*",
           "*69xinshu.*/*",
-          "69yuedu.*/*"
+          "*69yuedu.*/*",
+          "*twkan.*/*"
         ],
         "js": ["./content_scripts.js"]
     }]
