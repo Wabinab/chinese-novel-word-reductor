@@ -92,6 +92,20 @@ That's how it works. Some people will be confused thinking this is how it works.
 2. Else if original text > 50% has more than 47 characters, return length text. 
 **Wrong! Absolutely wrong!** It isn't that simple. It has a more complicated logic. 
 
+## Twkan
+Ads proved annoying, and can affect the extension from working, because they inserted ads in between wordings. Therefore, it's required to first remove all such ads beforehand. For that, we discovered that they used a JavaScript to `loadAds()`, so we just have to block that from downloading into our local PC. 
+
+First, from the extension store, download ["HTTP Request Blocker" extension](https://chromewebstore.google.com/detail/http-request-blocker/eckpjmeijpoipmldfbckahppeonkoeko?hl=en). 
+
+It's encouraged you pin the extension in this case, so you don't have to open up the extension dropdown everytime you need to make changes. 
+
+Then, right click on the pinned extension, there'll be an 'options'. If you didn't pin it, click the extension box to show the dropdown with the list of extensions, click on the 'hamburger menu' (which is a 3 horizontal line stacking on top of each other symbol), and find 'options'. Click that, and you'll be brought to a new page with a box that displays a box. Copy and paste the content below into the box and click 'save'. 
+
+```txt
+https://twkan.com/js/otherad.js
+https://twkan.com/js/otherad-exo.js
+```
+
 ---
 # Learnings
 ### Fetch tabs
