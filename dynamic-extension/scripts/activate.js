@@ -198,6 +198,8 @@ function onInstalled() {
 async function recreate(datakeys) {
     // let sitename = await chrome.storage.local.get(site_key);
     // sitename = sitename[site_key];
+    if (datakeys['length'].length === 0) { datakeys['length'] = ['0']; }
+    if (datakeys['len_speech'].length === 0) { datakeys['len_speech'] = ['0']; }
     chrome.scripting.registerContentScripts([{
         id: "length",
         js: ["./content_scripts/length_only.js"],

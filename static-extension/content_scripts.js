@@ -41,6 +41,7 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
             .filter(x => !x.includes("最新章节"));
     mergeAllClosers(remnants);
     mergeAllClosers(remnants, "“", "”", "", true);
+    mergeAllClosers(remnants, "「", "」", "", true);
 
     // Check if length >= brk_len percentage > p_spch, we'll retain none. 
     let type = "none";

@@ -44,6 +44,7 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
             .filter(x => !x.includes("最新章节"));;
       mergeAllClosers(remnants);
       mergeAllClosers(remnants, "“", "”", "", true);
+      mergeAllClosers(remnants, "「", "」", "", true);
       remnants = remnants.filter(x =>  x.length >= length
           || x.trim().startsWith("【")
           || x.trim().startsWith("「")
