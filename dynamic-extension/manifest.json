@@ -32,5 +32,14 @@
   }, {
     "matches": ["*://www.6ywx.com/*/*/*.html"],
     "js": ["./content_scripts/6ywx_bg.js"]
+  }, {
+    "matches": ["https://*/book/*"],
+    "include_globs": [
+      "*69shu.*/*", 
+      "*69shuba.*/*",
+      "*69xinshu.*/*",
+      "*69yuedu.*/*"
+    ],
+    "js": ["./content_scripts/set_homepage.js"]
   }]
 }

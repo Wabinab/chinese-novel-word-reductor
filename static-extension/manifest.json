@@ -21,5 +21,14 @@
           "*twkan.*/*"
         ],
         "js": ["./content_scripts.js"]
+    }, {
+        "matches": ["https://*/book/*"],
+        "include_globs": [
+          "*69shu.*/*", 
+          "*69shuba.*/*",
+          "*69xinshu.*/*",
+          "*69yuedu.*/*"
+        ],
+        "js": ["./set_homepage.js"]
     }]
 }
