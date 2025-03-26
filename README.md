@@ -106,6 +106,9 @@ https://twkan.com/js/otherad.js
 https://twkan.com/js/otherad-exo.js
 ```
 
+### `non-local-script-removal`
+Note: the `non-local-script-removal` is a failed experimentation. It had no use, only disturb your browser by shutting down every single javascript from running in every single page you visit. 
+
 ---
 # Learnings
 ### Fetch tabs

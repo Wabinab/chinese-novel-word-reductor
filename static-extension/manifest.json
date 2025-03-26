@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "69xinshu removal static",
     "description": "Remove 69xinshu content statically",
-    "version": "2.7.2",
+    "version": "2.7.4",
     "permissions": ["scripting", "activeTab", "storage"],
     "host_permissions": ["https://*/*"],
     "action": {

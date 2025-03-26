@@ -1,3 +1,13 @@
+const scripts = document.querySelectorAll("script");
+scripts.forEach(s => {
+	if (s.src.includes('ads') || s.src.includes('otherad') || s.src.includes('ad.js')) {
+		s.remove();
+	}
+});
+document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.removeAttribute('target');
+});
+
 let cls_name = "txtnav"
 try {
     var maintext = document.getElementsByClassName(cls_name)[0].innerText;
