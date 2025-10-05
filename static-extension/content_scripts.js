@@ -7,6 +7,12 @@ scripts.forEach(s => {
 document.querySelectorAll('a[target="_blank"]').forEach(link => {
     link.removeAttribute('target');
 });
+let txtcenter = document.getElementsByClassName('txtcenter');
+let txtcenter_len = txtcenter.length
+for (let i = 0; i < txtcenter_len; i++) {
+    txtcenter[0].remove()  // remove modify the array length. 
+}
+
 
 let cls_name = "txtnav"
 try {
@@ -64,8 +70,9 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     }
 
     // Check if speech too short percentage > p_len. 
+    var opener = remnants.filter(x => x.trim().startsWith("【"));
     let spch_list = remnants.filter(x =>  x.length >= brk_len
-        || x.trim().startsWith("【")
+        || x.trim().startsWith("【") && ((opener.length / remnants.length) < 0.4)  // if more than 40%, don't filter;
         || x.trim().startsWith("「")
         || (x.includes("：") && !x.includes("“") && check_right(x))
         || (x.includes('“') && x.length >= brk_spch)
@@ -80,8 +87,9 @@ chrome.storage.local.get(['brklen', 'brkspch', 'p_len', 'p_spch']).then((result)
     if (type != "none") {
         if (type == "speech") remnants = spch_list;
         if (type == "length") {
+            opener = remnants.filter(x => x.trim().startsWith("【"));
             remnants = remnants.filter(x =>  x.length >= brk_len 
-                || x.trim().startsWith("【")
+                || x.trim().startsWith("【") && ((opener.length / remnants.length) < 0.4)  // if more than 40%, don't filter;
             );
         }
         remnants = remnants.filter(onlyUnique);

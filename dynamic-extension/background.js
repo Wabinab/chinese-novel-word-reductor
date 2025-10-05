@@ -24,6 +24,12 @@ chrome.runtime.onInstalled.addListener(() => {
 
     // set breaklength default to 45.
     chrome.storage.local.set({ "breaklength": 45, "breakspeech": 0 });
+    chrome.storage.local.set({
+        'brklen1': 38, 
+        'brkspch1': 0, 
+        'p_spch1': 65, 
+        'p_len1': 50
+    });
 });
 
 const len_key = 'length';
@@ -70,3 +76,6 @@ function recreate(datakeys) {
 function code_to_url(code) {
     return `https://*/*/${code}/*`;
 }
+
+
+

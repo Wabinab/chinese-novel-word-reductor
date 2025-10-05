@@ -1,14 +1,19 @@
-var hosts = ["69shu", "69shuba", "69xinshu", "69yuedu", "twkan"]
+var hosts = ["69shu", "69shuba", "69xinshu", "69yuedu", "twkan", "mterb"]
 if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
   const scripts = document.querySelectorAll("script");
 	scripts.forEach(s => {
-			if (s.src.includes('ads') || s.src.includes('otherad') || s.src.includes('ad.js')) {
-					s.remove();
-			}
+		if (s.src.includes('ads') || s.src.includes('otherad') || s.src.includes('ad.js')) {
+																		s.remove();
+		}
 	});
 	document.querySelectorAll('a[target="_blank"]').forEach(link => {
-			link.removeAttribute('target');
+		link.removeAttribute('target');
 	});
+	let txtcenter = document.getElementsByClassName('txtcenter');
+	let txtcenter_len = txtcenter.length
+	for (let i = 0; i < txtcenter_len; i++) {
+		txtcenter[0].remove()  // remove modify the array length. 
+	}
 
   let cls_name = "txtnav"
   try {
@@ -55,8 +60,9 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
       mergeAllClosers(remnants);
       mergeAllClosers(remnants, "“", "”", "", true);
       mergeAllClosers(remnants, "「", "」", "", true);
+      var opener = remnants.filter(x => x.trim().startsWith("【"));
       remnants = remnants.filter(x =>  x.length >= length
-          || x.trim().startsWith("【")
+          || x.trim().startsWith("【")  && ((opener.length / remnants.length) < 0.4)  // if more than 40%, don't filter;
           || x.trim().startsWith("「")
           || (x.includes("：") && !x.includes("“") && check_right(x))
           || (x.includes('“') && x.length >= speech)

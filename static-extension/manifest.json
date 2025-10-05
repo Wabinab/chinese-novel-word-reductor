@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "69xinshu removal static",
     "description": "Remove 69xinshu content statically",
-    "version": "2.7.4",
+    "version": "2.7.9",
     "permissions": ["scripting", "activeTab", "storage"],
     "host_permissions": ["https://*/*"],
     "action": {
@@ -14,21 +14,30 @@
     "content_scripts": [{
         "matches": [ "https://*/*/*/*" ],
         "include_globs": [
-          "*69shu.*/*", 
+          "*69shu.*/*",
           "*69shuba.*/*",
           "*69xinshu.*/*",
           "*69yuedu.*/*",
-          "*twkan.*/*"
+          "*twkan.*/*",
+          "*mterb.*/*"
         ],
         "js": ["./content_scripts.js"]
     }, {
         "matches": ["https://*/book/*"],
         "include_globs": [
-          "*69shu.*/*", 
+          "*69shu.*/*",
           "*69shuba.*/*",
           "*69xinshu.*/*",
-          "*69yuedu.*/*"
+          "*69yuedu.*/*",
+          "*twkan.*/*",
+          "*mterb.*/*"
         ],
         "js": ["./set_homepage.js"]
+    }, {
+        "matches": ["https://presearch.com/*"],
+        "js": ["./content_scripts/set_presearch.js"]
+    }, {
+        "matches": ["https://www.69yue.top/article/*"],
+        "js": ["./content_scripts/auto_69yuetop.js"]
     }]
 }

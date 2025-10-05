@@ -1,4 +1,4 @@
-var hosts = ["69shu", "69shuba", "69xinshu", "69yuedu", "twkan"]
+var hosts = ["69shu", "69shuba", "69xinshu", "69yuedu", "twkan", "mterb"]
 if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
     const scripts = document.querySelectorAll("script");
 	scripts.forEach(s => {
@@ -9,6 +9,11 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
     document.querySelectorAll('a[target="_blank"]').forEach(link => {
 			link.removeAttribute('target');
     });
+    let txtcenter = document.getElementsByClassName('txtcenter');
+    let txtcenter_len = txtcenter.length
+    for (let i = 0; i < txtcenter_len; i++) {
+        txtcenter[0].remove()  // remove modify the array length. 
+    }
     
     let cls_name = "txtnav"
     try {
@@ -38,9 +43,9 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
   var last_remnant = remnants[remnants.length-1];
   var last_line = mainhtml.split(last_remnant.trim()).pop()
     .split('<br>').filter(e => e.trim() != '').join('<br><br>')
-		.replaceAll('</p>', '<br>');
+    .replaceAll('</p>', '<br>');
 	//   .replaceAll('\n<br>\n', '');
-	first_line = first_line.replaceAll('<p>', '<br><br>&emsp;&emsp;&emsp;');
+  first_line = first_line.replaceAll('<p>', '<br><br>&emsp;&emsp;&emsp;');
   
   // Filter now
   chrome.storage.local.get('breaklength').then((length) => {
@@ -49,12 +54,15 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
             .filter(x => !x.includes("无错版本"))
             .filter(x => !x.includes("最新章节"));;
       mergeAllClosers(remnants);
+    //   mergeAllClosers(remnants, "【", "】", "", true);
       mergeAllClosers(remnants, "“", "”", "", true);
       mergeAllClosers(remnants, "「", "」", "", true);
+      var opener = remnants.filter(x => x.trim().startsWith("【"));
       remnants = remnants.filter(x =>  x.length >= length 
-          || x.trim().startsWith("【")
-          || x.trim().startsWith("「")
-          || (x.includes("：") && !x.includes("“") && check_right(x))
+          || x.trim().startsWith("【") && ((opener.length / remnants.length) < 0.4)  // if more than 40%, don't filter;
+          || (x.trim().startsWith("「") && !window.location.host.includes("twkan"))
+          || (x.includes("：") && !x.includes("“") && check_right(x) && !window.location.host.includes('twkan'))
+          || (x.includes("：") && !x.includes("「") && check_right(x) && window.location.host.includes('twkan'))
       );
       remnants = remnants.filter(onlyUnique);
   

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "69xinshu removal",
   "description": "Remove 69xinshu content dynamically",
-  "version": "2.7.4",
+  "version": "2.8.0",
   "background": {
     "service_worker": "background.js"
   },
@@ -33,13 +33,27 @@
     "matches": ["*://www.6ywx.com/*/*/*.html"],
     "js": ["./content_scripts/6ywx_bg.js"]
   }, {
+    "matches": ["*://www.qidian.com/chapter/*"], 
+    "js": ["./content_scripts/qidian_full.js"]
+  }, {
     "matches": ["https://*/book/*"],
     "include_globs": [
       "*69shu.*/*", 
       "*69shuba.*/*",
       "*69xinshu.*/*",
-      "*69yuedu.*/*"
+      "*69yuedu.*/*",
+      "*twkan.*/*", 
+      "*mterb.*/*"
     ],
     "js": ["./content_scripts/set_homepage.js"]
+  }, {
+    "matches": ["https://presearch.com/*"],
+    "js": ["./content_scripts/set_presearch.js"]
+  }, {
+    "matches": ["https://twkan.com/txt/*/*"],
+    "js": ["./content_scripts/set_twkan.js"]
+  }, {
+    "matches": ["https://www.69yue.top/article/*"],
+    "js": ["./content_scripts/auto_69yuetop.js"]
   }]
 }
