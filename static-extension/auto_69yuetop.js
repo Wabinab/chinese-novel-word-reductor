@@ -19,6 +19,10 @@ chrome.storage.local.get(['brklen1', 'brkspch1', 'p_len1', 'p_spch1']).then((res
   let type = "none";
   let temp_len = remnants.filter(x => x.length >= brk_len);
   if (percentage(temp_len.length, remnants.length) > percentage_spch) {
+    let g = document.getElementsByClassName('cntCls');
+    for (let i = 0; i < g.length; i++) {
+        document.getElementsByClassName('cntCls')[i].style.fontSize = '32px';
+    }
     return;
   }
 
