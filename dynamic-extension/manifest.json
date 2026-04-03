@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "69xinshu removal",
   "description": "Remove 69xinshu content dynamically",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "background": {
     "service_worker": "background.js"
   },
@@ -55,5 +55,8 @@
   }, {
     "matches": ["https://www.69yue.top/article/*"],
     "js": ["./content_scripts/auto_69yuetop.js"]
+  }, {
+    "matches": ["https://jpxs123.com/book/*/*"],
+    "js": ["./content_scripts/jpxs123.js"]
   }]
 }
