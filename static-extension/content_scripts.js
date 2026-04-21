@@ -38,6 +38,15 @@ if (first_line.length > 2000) first_line = mainhtml.split(remnants[1].trim())[0]
 if (first_line.length > 2000) first_line = mainhtml.split('\n<br><br>\n')[0] + '\n<br><br>\n';
 first_line = first_line.split("如果您使用第三方小说APP或各种浏览器插件打开此网站可能导致内容显示乱序,请稍后尝试使用主流浏览器访问此网站，感谢您的支持!")[0];
 var last_remnant = remnants[remnants.length-1];
+// If only have 1 item, we need to split using another method. 
+var splitted_last = mainhtml.split(last_remnant.trim());
+if (splitted_last.length == 1) {
+  last_remnant = remnants[remnants.length - 2];
+  splitted_last = mainhtml.split(last_remnant.trim());
+}
+var last_line = splitted_last.pop()
+  .split('<br>').filter(e => e.trim() != '').join('<br><br>')
+  .replaceAll('</p>', '<br>');
 var last_line = mainhtml.split(last_remnant.trim()).pop()
 .split('<br>').filter(e => e.trim() != '').join('<br><br>')
     .replaceAll('</p>', '<br>');
