@@ -53,6 +53,7 @@ if (hosts.filter(h => window.location.host.includes(h)).length > 0) {
   var last_line = splitted_last.pop()
     .split('<br>').filter(e => e.trim() != '').join('<br><br>')
     .replaceAll('</p>', '<br>');
+  if (last_line.length > 250) last_line = '';
   first_line = first_line.replaceAll('<p>', '<br><br>&emsp;&emsp;&emsp;&emsp;');
 
 	// Filter now

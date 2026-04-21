@@ -48,9 +48,7 @@ if (splitted_last.length == 1) {
 var last_line = splitted_last.pop()
   .split('<br>').filter(e => e.trim() != '').join('<br><br>')
   .replaceAll('</p>', '<br>');
-var last_line = mainhtml.split(last_remnant.trim()).pop()
-.split('<br>').filter(e => e.trim() != '').join('<br><br>')
-    .replaceAll('</p>', '<br>');
+if (last_line.length > 250) last_line = '';
 //   .replaceAll('\n<br>\n', '');
 first_line = first_line.replaceAll('<p>', '<br><br>&emsp;&emsp;');
 
