@@ -41,6 +41,7 @@ var last_remnant = remnants[remnants.length-1];
 // If only have 1 item, we need to split using another method. 
 var splitted_last = mainhtml.split(last_remnant.trim());
 if (splitted_last.length == 1) {
+  remnants.pop();  // Remove the last element. 
   last_remnant = remnants[remnants.length - 2];
   splitted_last = mainhtml.split(last_remnant.trim());
 }
